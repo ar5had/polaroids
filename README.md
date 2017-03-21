@@ -1,4 +1,4 @@
-# polaroid
+# polaroids
 A full stack JavaScript app inspired by Pinterest.
 
 ## User Stories 
