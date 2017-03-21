@@ -1,5 +1,5 @@
-# polaroids
-A full stack JavaScript app inspired by Pinterest.
+# Polaroids
+A full stack JavaScript app inspired from Pinterest and unsplash.
 
 ## User Stories 
 
@@ -17,7 +17,6 @@ A full stack JavaScript app inspired by Pinterest.
 * Css/Sass Modules
 * Helmet
 * React Router
-* Sockets
 * Node
 * Express
 * Mongoose/MongoDB
