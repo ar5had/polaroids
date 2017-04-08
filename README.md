@@ -1,5 +1,5 @@
-# polaroids
-A full stack JavaScript app inspired by Pinterest.
+# Polaroids
+A full stack JavaScript app inspired from Pinterest and unsplash.
 
 ## User Stories 
 
@@ -11,15 +11,14 @@ A full stack JavaScript app inspired by Pinterest.
 * As an authenticated user, if I upload an image that is broken, it will be replaced by a placeholder image. (can use jQuery broken image detection)
 
 ## Tech Stack
-* Server-side rendering
 * React
 * Redux
 * Css/Sass Modules
 * Helmet
-* React Router
-* Sockets
+* React Router@4
 * Node
 * Express
 * Mongoose/MongoDB
 * Webpack
-* Next(stable version ?)
+* Mocha
+* Travis CI
