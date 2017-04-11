@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 // import {Link} from 'react-router';
-import { browserHistory } from 'react-router';
 
 import './styles.sass';
 
@@ -12,7 +11,7 @@ class Item extends Component {
 
         </div>
         <div className="info">
-
+          Some polaroid
         </div>
       </div>
     );
