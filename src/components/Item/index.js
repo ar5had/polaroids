@@ -8,9 +8,12 @@ class Item extends Component {
   render() {
     return(
       <div className="item">
-        <div className="content" onClick={()=>{
-          browserHistory.push('/item/123');
-        }} />
+        <div className="picture">
+
+        </div>
+        <div className="info">
+
+        </div>
       </div>
     );
   }

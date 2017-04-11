@@ -2,7 +2,7 @@ $background-color: #fcfcfc
 $modal-background: #fafafa
 $modal-border-color: #f2f2f2
 $hider-background: #fcfcfc
-$black: #222
+$black: #5b5d6e
 $light-grey: rgba(0, 0, 0, .3)
 $grey: rgba(34, 34, 34, .55)
 $fbColor: rgba(59, 89, 152, 0.9)
@@ -17,7 +17,7 @@ $googleColor: rgba(221, 75, 57, 0.9)
 @function strip-units($number)
   @return $number / ($number * 0 + 1)
 
-@function get-vw($target) 
+@function get-vw($target)
   $vw-context: (1000*.01) * 1px
   @return ($target/$vw-context) * 1vw
 
