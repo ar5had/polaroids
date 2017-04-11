@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 
 import './styles.sass';
 
+import polaroidPic from '../../assets/images/polaroid.svg';
+
 class Header extends Component {
 
   constructor(props) {
@@ -91,7 +93,8 @@ class Header extends Component {
       <header className="header">
         <h1>
           <Link onlyActiveOnIndex={true} to="/" className="logo">
-            Trader
+            <img src={polaroidPic} className="logoPic" />
+            <span>Polaroids</span>
           </Link>
         </h1>
         {this.state.menuActive ? this.menuButton: ""}
