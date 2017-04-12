@@ -23,7 +23,7 @@
   border: none
   font-size: .9rem
   font-weight: 600
-  color: $light-grey
+  color: $blue
   line-height: 1.5
   // change it if making fixed header
   margin-bottom: 30px
@@ -61,7 +61,7 @@ header
 
 .navLink
   transition: color .3s
-  color: $light-grey
+  color: $blue
   display: flex
   font-weight: 600
   letter-spacing: 0
@@ -76,7 +76,7 @@ header
     cursor: pointer
 
   &:last-child
-    border-bottom: solid 2px #ccc
+    border-bottom: solid 2px transparentize($blue, .2)
 
 .activeNavLink
   color: $black
