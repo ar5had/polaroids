@@ -2,16 +2,24 @@
 
 .item
   height: auto
-  padding: 15px
-  border: solid 2px #eee
+  padding: 15px 15px 0 15px
+  background: #fff
   box-sizing: border-box
-  flex: 1 0 calc(50% - 40px)
+  display: flex
+  flex-direction: column
   margin-bottom: 40px
+  box-shadow: 0 0 10px rgba(0,0,0,.1)
+  flex: 1 0 calc(50% - 40px)
   &:nth-child(2n)
     margin-left: 40px
   .info
-    padding: 15px
+    padding: 10px 0
+    color: $blue
   .picture
-    height: 100%
-    background: #eee
+    flex-basis: 200px
+    background:
+      image: url('https://unsplash.it/200/300?random')
+      repeat: no-repeat
+      size: cover
+
     cursor: pointer

@@ -7,11 +7,9 @@ class Item extends Component {
   render() {
     return(
       <div className="item">
-        <div className="picture">
-
-        </div>
+        <div className="picture" />
         <div className="info">
-          Some polaroid
+          <span className="pmf pname">Some polaroid</span>
         </div>
       </div>
     );

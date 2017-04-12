@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 
 import './styles.sass';
 
+import pimg from '../../assets/images/polaroidb.svg';
+
 class Header extends Component {
 
   constructor(props) {
@@ -91,7 +93,7 @@ class Header extends Component {
       <header className="header">
         <h1>
           <Link onlyActiveOnIndex={true} to="/" className="logo">
-            <span className="pmf">Polaroids</span>
+            <img src={pimg} />
           </Link>
         </h1>
         {this.state.menuActive ? this.menuButton: ""}
