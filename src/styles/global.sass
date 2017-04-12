@@ -21,8 +21,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 body
   line-height: 1
-  // set max height to more than 100vh to remove shift produced by scrollbar
-  // min-height: calc(100vh + 2px)
+  overflow: auto
 
 ol, ul
   list-style: none
@@ -63,9 +62,11 @@ body
 
 h1, h2, h3
   text-transform: uppercase
-  font-weight: 900
   line-height: 1.5
   font-family: 'Permanent Marker', helvetica, sans-serif
+  font-weight: normal
+  word-spacing: 2px
+  letter-spacing: 2px
 
 h1
   font-size: 1.5rem

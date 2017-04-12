@@ -4,16 +4,16 @@ import Item from '../Item';
 
 import './styles.sass';
 
-class OtherInfo extends Component {
+class Favourites extends Component {
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <div className="otherInfo">
-        <h4 className="heading">Your Uploads</h4>
-        <div className="mypolaroidsWrapper">
+      <div className="favourites">
+        <h4 className="heading">Your Favourites</h4>
+        <div className="favpolaroidsWrapper mypolaroidsWrapper">
           {"1234567890".split("").map((e, i) => <Item key={i} />)}
         </div>
       </div>
@@ -21,4 +21,4 @@ class OtherInfo extends Component {
   }
 }
 
-export default OtherInfo;
+export default Favourites;
