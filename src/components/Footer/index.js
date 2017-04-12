@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import { Link } from 'react-router';
+
 import './styles.sass';
 
 class Footer extends Component {
@@ -6,7 +9,10 @@ class Footer extends Component {
     return (
       <footer className="footer">
         <p className="has-link">
-          <span className="code">&lt;/&gt;</span> by <a target="blank" href="http://iamarshad.com">Arshad Khan</a>
+          <span>
+            <span className="code">&lt;/&gt;</span> by <a target="blank" href="http://iamarshad.com">Arshad Khan</a>
+          </span>
+          <span className="credits"><Link className="">Credits</Link></span>
         </p>
       </footer>
     );

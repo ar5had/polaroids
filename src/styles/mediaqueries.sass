@@ -1,24 +1,9 @@
 @import './variables.sass'
 
-@media screen and (max-width: 400px)
-  .lIWrapper, .cIWrapper
-    & > *
-      flex-basis: 100%
-      flex: 0 1 calc(50% -2rem)
-  h3.error
-    font-size: 2rem
-  .priceWrapper
-    flex-direction: column
-    .inputWrapper
-      flex: 1
-      .input
-        width: 100%
-      &:first-child
-        margin-right: 0 !important
-      &:last-child
-        margin-left: 0 !important
-
-@media screen and (min-width: 768px)
+@media screen and (min-width: 500px)
+  .footer
+    padding: 20px
+    margin: 40px auto 20px
   button.normalBtn
     padding: .5rem 1rem !important
   .header
@@ -43,7 +28,7 @@
     margin-left: 20px
     font-size: .9rem
     &:last-child
-      padding: 0
+      border: none
 
   .otherInfo
     margin: 0 2rem
@@ -81,6 +66,12 @@
       font-size: 1rem
   .tradeProposedWrapper
     margin-top: 0
+
+  .item
+    flex: 1 0 calc(50% - 40px)
+    &:nth-child(2n)
+      margin-left: 40px
+
 
   .itemPageWrapper
     flex-direction: row
@@ -129,3 +120,10 @@
   .logo
     span
       display: inline
+
+
+@media screen and (max-width: 700px) and (min-width: 500px)
+  .item
+    margin-bottom: 20px
+    &:nth-child(2n)
+      margin-left: 20px

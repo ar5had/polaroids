@@ -37,8 +37,8 @@ class Header extends Component {
         <Link onlyActiveOnIndex={true} key={3} to="/login" activeClassName="activeNavLink" className="navLink">
           Favourites
         </Link>
-        <Link onlyActiveOnIndex={true} key={4} to="/login" activeClassName="activeNavLink" className="navLink">
-          Login
+        <Link onlyActiveOnIndex={true} key={4} to="/logout" activeClassName="activeNavLink" className="navLink">
+          Logout
         </Link>
       </div>
     );
@@ -46,7 +46,7 @@ class Header extends Component {
     this.loggedOutMenu = (
       <div className="menu loginMenu">
         <Link onlyActiveOnIndex={true} key={5} activeClassName="activeNavLink" className="navLink">
-          LogIn / Sign Up
+          Login | Signup
         </Link>
       </div>
     );
@@ -65,7 +65,7 @@ class Header extends Component {
 
   setMenuState(width) {
     if (this.previousWidth !== width) {
-      if (width > 768) {
+      if (width > 500) {
         const menu = document.querySelector('div.menu');
         if(menu) {
           menu.classList.remove("open");
