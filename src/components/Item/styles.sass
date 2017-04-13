@@ -15,6 +15,57 @@
   .info
     padding: 10px 0
     color: $blue
+    letter-spacing: 2px
+    word-spacing: 2px
+    display: flex
+    .pname
+      flex: 1
+      line-height: 2
+    .pauthinfo
+      display: flex
+      align-items: center
+      .heart-button.liked
+        background:
+          color: #f37070
+      .delete-button.deleted
+        background:
+          color: $black
+      .heart-button, .delete-button
+        line-height: 1
+        border: solid 2px transparent
+        font-weight: bold
+        color: $light-grey
+        line-height: 1
+        cursor: pointer
+        background:
+          image: url('../../assets/images/heart.png')
+          repeat: no-repeat
+          color: lighten($light-grey, 20%)
+          size: 50%
+          position: 50% 50%
+        width: 18px
+        height: 18px
+
+        display: block
+        border-radius: 50%
+      .delete-button
+        border: none
+        background-image: url('../../assets/images/delete.png')
+        width: 24px
+        height: 24px
+      .author-img
+        margin-left: 10px
+        span
+          background:
+            image: url('http://iamarshad.com/images/asd.jpg')
+            repeat: no-repeat
+            size: 100%
+          overflow: hidden
+          text-indent: 110%
+          display: block
+          width: 24px
+          height: 24px
+          border-radius: 50%
   .picture
     flex-basis: 200px
     background:
