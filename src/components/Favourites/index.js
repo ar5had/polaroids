@@ -14,7 +14,7 @@ class Favourites extends Component {
       <div className="favourites">
         <h4 className="heading">Your Favourites</h4>
         <div className="favpolaroidsWrapper mypolaroidsWrapper">
-          {"1234567890".split("").map((e, i) => <Item key={i} />)}
+          {"123456790".split("").map((e, i) => <Item key={i} />)}
         </div>
       </div>
     );

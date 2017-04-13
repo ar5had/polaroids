@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import './styles.sass';
 
 import pimg from '../../assets/images/polaroidb.svg';
+import addimg from '../../assets/images/add.svg';
+
 
 class Header extends Component {
 
@@ -88,6 +90,14 @@ class Header extends Component {
     }
   }
 
+  getFixedButtons() {
+    return (
+      <button className="fbWrapper">
+        <img src={addimg} />
+      </button>
+    );
+  }
+
   render() {
     return (
       <header className="header">
@@ -98,6 +108,7 @@ class Header extends Component {
         </h1>
         {this.state.menuActive ? this.menuButton: ""}
         {this.state.nav}
+        {this.getFixedButtons()}
       </header>
     );
   }
