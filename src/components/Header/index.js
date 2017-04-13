@@ -3,6 +3,8 @@ import { Link } from 'react-router';
 
 import './styles.sass';
 
+import AddItemPage from '../AddItemPage/index';
+
 import pimg from '../../assets/images/polaroidb.svg';
 import addimg from '../../assets/images/add.svg';
 
@@ -11,7 +13,9 @@ class Header extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      modalOpened: false
+    };
   }
 
   componentWillMount() {
@@ -92,11 +96,42 @@ class Header extends Component {
 
   getFixedButtons() {
     return (
-      <button className="fbWrapper">
+      <button className="fbWrapper" onClick={
+        () => {
+          this.setState({modalOpened: !this.state.modalOpened});
+        }
+      }>
         <img src={addimg} />
       </button>
     );
   }
+
+  closeModal() {
+    this.setState({ modalOpened: false });
+    document.body.classList.remove('modal-opened');
+    document.body.style.marginRight = 0;
+  }
+
+  getModal() {
+    if (this.state.modalOpened) {
+      return (
+        <AddItemPage
+          openClass="open" close={this.closeModal.bind(this)}
+          addItem={this.closeModal.bind(this)} />
+      );
+    } else {
+      return;
+    }
+  }
+
+  openModal() {
+    const scrollBar = document.querySelector('.scrollbar-measure');
+    const scrollBarWidth = scrollBar.offsetWidth - scrollBar.clientWidth;
+    document.body.classList.add('modal-opened');
+    document.body.style.marginRight = `${scrollBarWidth}px`;
+    this.setState({ modalOpened: true });
+  }
+
 
   render() {
     return (
@@ -109,6 +144,7 @@ class Header extends Component {
         {this.state.menuActive ? this.menuButton: ""}
         {this.state.nav}
         {this.getFixedButtons()}
+        {this.getModal()}
       </header>
     );
   }
