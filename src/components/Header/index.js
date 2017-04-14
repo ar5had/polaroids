@@ -98,7 +98,7 @@ class Header extends Component {
     return (
       <button className="fbWrapper" onClick={
         () => {
-          this.setState({modalOpened: !this.state.modalOpened});
+          this.openModal();
         }
       }>
         <img src={addimg} />
@@ -119,8 +119,6 @@ class Header extends Component {
           openClass="open" close={this.closeModal.bind(this)}
           addItem={this.closeModal.bind(this)} />
       );
-    } else {
-      return;
     }
   }
 
@@ -129,6 +127,7 @@ class Header extends Component {
     const scrollBarWidth = scrollBar.offsetWidth - scrollBar.clientWidth;
     document.body.classList.add('modal-opened');
     document.body.style.marginRight = `${scrollBarWidth}px`;
+    // const fbw = document.querySelector('.fbWrapper');
     this.setState({ modalOpened: true });
   }
 

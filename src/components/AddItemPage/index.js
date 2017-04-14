@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
+import addImg from '../../assets/images/add.svg';
+
 import './styles.sass';
 
 class AddItemPage extends Component {
@@ -17,7 +19,7 @@ class AddItemPage extends Component {
     this.modalWrapper.classList.remove(this.props.openClass);
     setTimeout(() => {
       this.props.close();
-    }, 850);
+    }, 710);
   }
 
   render() {
@@ -26,12 +28,14 @@ class AddItemPage extends Component {
         <div className="hider" />
         <div className="modal">
           <div className="heading">
-            <h3>New Photo</h3>
+            <h3>New Post</h3>
           </div>
           <div className="itemWrapper">
             <div className="itemPicWrapper">
               <div className="imgWrapper">
-                <div className="img" />
+                <div className="img">
+                  <img src={addImg} />
+                </div>
                 <input className="captionText pmf" type="text" autoComplete="off"
                   required="true" placeholder="Caption"
                 />
