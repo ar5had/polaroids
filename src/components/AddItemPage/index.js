@@ -26,7 +26,7 @@ class AddItemPage extends Component {
         <div className="hider" />
         <div className="modal">
           <div className="heading">
-            <h3>New Item</h3>
+            <h3>New Photo</h3>
           </div>
           <div className="itemWrapper">
             <div className="itemPicWrapper">

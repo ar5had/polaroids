@@ -2,6 +2,14 @@
 
 .addItemWrapper
   z-index: 9999
+  display: flex
+  justify-content: center
+  align-items: center
+  position: fixed
+  top: 0
+  left: 0
+  height: 100%
+  width: 100%
   .hider
     position: fixed
     top: 0
@@ -11,23 +19,21 @@
     z-index: 999999
     +hider-gradient
     opacity: 0
-    transition: opacity .7s cubic-bezier(.82,0,.12,1)
+    transition: opacity .4s cubic-bezier(.82,0,.12,1)
 
   .modal
+    align-self: center
     overflow: hidden
     background: $modal-background
     max-width: 900px
     height: auto
-    position: fixed
-    top: 50%
-    left: 50%
     border: solid 1px $modal-border-color
     box-shadow: 0 4px 29px rgba(0,0,0,.22), 0 0 0 1px rgba(0,0,0,.04)
-    transform: translate(-50%, 50%)
+    transform: scale(1.5)
     z-index: 9999999
     box-sizing: border-box
     opacity: 0
-    transition: transform .8s cubic-bezier(.82,0,.12,1), opacity .6s cubic-bezier(.82,0,.12,1)
+    transition: transform .4s cubic-bezier(.82,0,.12,1), opacity .5s cubic-bezier(.82,0,.12,1)
 
     .heading
       top: 0
@@ -50,10 +56,10 @@
       flex-direction: column
       overflow-y: auto
       height: auto
-      margin-top: 50px
+      margin-top: 43px
       overflow-y: auto
       align-items: center
-      padding: 1rem 1.5rem
+      padding: 1.5rem
       .itemPicWrapper
         .imgWrapper
           background: #fff
@@ -63,10 +69,11 @@
           height: calc(90vmin - 200px)
           max-width: 290px
           max-height: 310px
-
+          min-width: 100px
+          min-height: 110px
         .img
           margin: auto
-          background: #eee
+          background: #f2f2f2
           height: 100%
           border-radius: 0
 
@@ -94,7 +101,7 @@
         font-weight: 700
         text-transform: uppercase
         background: none
-        transition: color .3s
+        transition: color .2s ease-in-out, background .2s ease-in-out
         cursor: pointer
         border-top: solid 2px $modal-border-color
         &:last-child
@@ -102,6 +109,7 @@
         &:hover
           color: $black
           cursor: pointer
+          background: transparentize($blue, .95)
         &:active
           color: $black
 
@@ -109,5 +117,5 @@
   .hider
     opacity: 1
   .modal
-    transform: translate(-50%, -50%)
+    transform: scale(1)
     opacity: 1
