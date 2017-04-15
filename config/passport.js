@@ -32,15 +32,13 @@ module.exports = function (passport) {
           } else {
             const newUser = new User();
             newUser.twitter.id = profile.id;
+            newUser.notificationsCount = 0;
             newUser.twitter.token = token;
             newUser.twitter.username = profile.username;
             newUser.name = profile.displayName;
-            newUser.dp = profile.photos[0].value || "/public/img/user.png";
-            newUser.pollsCount = 0;
-            newUser.pollsVotedCount = 0;
-            newUser.address = null;
-            newUser.booksPosted = [];
-            newUser.booksBought = [];
+            newUser.dp = profile.photos && profile.photos[0].value;
+            newUser.dp = newUser.dp && newUser.dp.replace("_normal", "");
+            newUser.items = [];
 
             newUser.save((err) => {
               if (err)
@@ -56,7 +54,8 @@ module.exports = function (passport) {
   passport.use(new FacebookStrategy({
     clientID: configAuth.facebookAuth.clientID,
     clientSecret: configAuth.facebookAuth.clientSecret,
-    callbackURL: configAuth.facebookAuth.callbackURL
+    callbackURL: configAuth.facebookAuth.callbackURL,
+    profileFields: ['id', 'name','picture.type(large)', 'emails',  'displayName', 'about', 'gender']
   },
     (token, refreshToken, profile, done) => {
       process.nextTick(function () {
@@ -68,15 +67,12 @@ module.exports = function (passport) {
           } else {
             const newUser = new User();
             newUser.facebook.id = profile.id;
+            newUser.notificationsCount = 0;
             newUser.facebook.token = token;
             newUser.name = profile.displayName;
             newUser.facebook.email = (profile.emails && profile.emails[0].value) || "Email not added";
-            newUser.dp = profile.image || "/public/img/user.png";
-            newUser.pollsCount = 0;
-            newUser.pollsVotedCount = 0;
-            newUser.address = null;
-            newUser.booksPosted = [];
-            newUser.booksBought = [];
+            newUser.dp = profile.photos && profile.photos[0].value;
+            newUser.items = [];
 
             newUser.save((err) => {
               if (err)
@@ -104,16 +100,13 @@ module.exports = function (passport) {
           } else {
             const newUser = new User();
             newUser.google.id = profile.id;
+            newUser.notificationsCount = 0;
             newUser.google.token = token;
             newUser.name = profile.displayName;
             newUser.google.email = profile.emails[0].value; // pull the first email
-            newUser.dp = profile.photos[0].value || "/public/img/user.png";
-            newUser.pollsCount = 0;
-            newUser.pollsVotedCount = 0;
-            newUser.address = null;
-            newUser.booksPosted = [];
-            newUser.booksBought = [];
-
+            newUser.dp = profile.photos && profile.photos[0].value;
+            newUser.dp = newUser.dp && newUser.dp.slice(0, newUser.dp.lastIndexOf('?'));
+            newUser.items = [];
             newUser.save((err) => {
               if (err)
                 throw err;

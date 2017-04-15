@@ -24,11 +24,13 @@
     "test:cover:travis": "npm run test:cover && cat ./coverage/lcov.info | node_modules/coveralls/bin/coveralls.js",
     "test:watch": "npm run test -- --watch",
     "open:cover": "npm run test:cover && open coverage/lcov-report/index.html",
-    "analyze-bundle": "babel-node ./tools/analyzeBundle.js"
+    "analyze-bundle": "babel-node ./tools/analyzeBundle.js",
+    "herokuStart": "node tools/distServer.js production"
   },
   "author": "Arshad Khan <arshdkhn1@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.0",
     "body-parser": "^1.16.1",
     "dotenv": "^4.0.0",
     "express-session": "^1.15.1",
@@ -46,7 +48,8 @@
     "react-router-redux": "4.0.7",
     "react-tap-event-plugin": "^2.0.1",
     "redux": "3.6.0",
-    "redux-thunk": "2.1.0"
+    "redux-thunk": "2.1.0",
+    "unfetch": "^2.1.2"
   },
   "devDependencies": {
     "autoprefixer": "6.5.4",
@@ -98,9 +101,17 @@
     "webpack-md5-hash": "0.0.5"
   },
   "keywords": [
-    "react", "redux", "react-router", "polaroids",
-    "Arshad Khan", "react-slingshot", "express",
-    "node", "mongoose", "mongodb", "arshdkhn1"
+    "react",
+    "redux",
+    "react-router",
+    "polaroids",
+    "Arshad Khan",
+    "react-slingshot",
+    "express",
+    "node",
+    "mongoose",
+    "mongodb",
+    "arshdkhn1"
   ],
   "repository": {
     "type": "git",

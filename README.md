@@ -13,12 +13,11 @@ A full stack JavaScript app inspired from Pinterest and unsplash.
 ## Tech Stack
 * React
 * Redux
-* Css/Sass Modules
-* Helmet
+* Sass
 * React Router@4
 * Node
 * Express
 * Mongoose/MongoDB
 * Webpack
-* Mocha
+* Mocha-Chai
 * Travis CI
