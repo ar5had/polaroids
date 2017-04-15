@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+
+import loadPageProps from '../../utils/loadPageProps';
+
 import './styles.sass';
 
 class ErrorPage extends Component {

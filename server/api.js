@@ -33,10 +33,10 @@ module.exports = function (app) {
     res.json({ 'error': '', 'notificationsCount': req.user.notificationsCount });
   });
 
-  // app.get('/api/getProfileData', isLoggedIn, (req, res) => {
-  //   const { name, address, phoneNo, email, dp } = req.user;
-  //   res.json({ name, address, phoneNo, email, dp });
-  // });
+  app.get('/api/getProfileData', isLoggedIn, (req, res) => {
+    const { name, dp } = req.user;
+    res.json({ name, dp });
+  });
 
   // app.post('/api/setProfileData', isLoggedIn, (req, res) => {
   //   const { landmark, city, state, pinCode, country, localAddress } = req.body;

@@ -7,7 +7,6 @@ const User = new Schema({
   name: String,
   dp: String,
   items: Array,
-  notificationsCount: Number,
   google: {
     id: String,
     token: String,

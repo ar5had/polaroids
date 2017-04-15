@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import Header from '../Header/index';
-import Footer from '../Footer/index';
+import Header from '../../containers/Header';
+import Footer from '../Footer';
 import './styles.sass';
 import '../../styles/animation.sass';
 

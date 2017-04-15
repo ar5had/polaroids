@@ -25,7 +25,7 @@ export function getInitialState(cb, page) {
     .then(data => {
       dispatch(
         {
-          type: types[`GET_INITIAL_${page.toUpperCase()}_STATE`],
+          type: types[`UPDATE_${page.toUpperCase()}_STATE`],
           payload: data
         }
       );

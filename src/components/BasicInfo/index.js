@@ -1,25 +1,26 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 import './styles.sass';
 
 class BasicInfo extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "Arshad Khan",
-      imgSrc: ""
-    };
-  }
   render() {
+    const { dp, name } = this.props;
     return(
       <div className="basicInfo">
-        <div className="profilePic" />
+        <div style={{backgroundImage: `url(${dp})`}}
+          className="profilePic"
+        />
         <div className="nameWrapper">
-          <h3 className="normal">{this.state.name}</h3>
+          <h3 className="normal">{name}</h3>
         </div>
       </div>
     );
   }
 }
+
+BasicInfo.propTypes = {
+  name: PropTypes.string.isRequired,
+  dp: PropTypes.string.isRequired
+};
 
 export default BasicInfo;

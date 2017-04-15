@@ -3,48 +3,52 @@ import { Route, IndexRoute } from 'react-router';
 
 import App from './components/App/index';
 import Main from './components/Main/index';
-import Profile from './components/Profile/index';
 import Login from './components/Login/index';
 import Favourites from './components/Favourites/index';
 import ErrorPage from './components/ErrorPage/index';
-import CheckAuth from './utils/checkAuth';
 
-export default function AllRoutes(/*dispatch*/) {
+import Profile from './containers/Profile/index';
+
+import CheckAuth from './utils/checkAuth';
+import { getInitialState } from './actions/commonActions';
+import { updateAppState } from './actions/appActions';
+
+export default function AllRoutes(dispatch) {
 
   const loadAppState = (nextState, replace, cb) => {
     document.body.style.cursor = 'wait';
     CheckAuth(
       () => {
-        console.log('AUTHORISED');
+        updateAppState({ loggedIn: true })(dispatch);
         cb();
       },
       () => {
-        console.warn('UNAUTHORISED');
+        updateAppState({ loggedIn: false})(dispatch);
         cb();
       }
     );
   };
 
-  // const requireAuthAndLoad = (nextState, replace, cb) => {
-  //   document.body.style.cursor = 'wait';
-  //   // CheckAuth take two function as parameter
-  //   // one for authorized req
-  //   // other for unauthorized req
-  //   // If user is authorized then load initial state
-  //   CheckAuth(
-  //     () => {
-  //       const path = nextState.location.pathname;
-  //       getInitialState(cb, path.slice(1))(dispatch);
-  //     },
-  //     () => {
-  //       replace({
-  //         pathname: '/login',
-  //         state: { nextPathname: nextState.location.pathname }
-  //       });
-  //       cb();
-  //     }
-  //   );
-  // };
+  const requireAuthAndLoad = (nextState, replace, cb) => {
+    document.body.style.cursor = 'wait';
+    // CheckAuth take two function as parameter
+    // one for authorized req
+    // other for unauthorized req
+    // If user is authorized then load initial state
+    CheckAuth(
+      () => {
+        const path = nextState.location.pathname;
+        getInitialState(cb, path.slice(1))(dispatch);
+      },
+      () => {
+        replace({
+          pathname: '/login',
+          state: { nextPathname: nextState.location.pathname }
+        });
+        cb();
+      }
+    );
+  };
 
   // const loadAllItems = (nextState, replace, cb) => {
   //   document.body.style.cursor = 'wait';
@@ -84,7 +88,7 @@ export default function AllRoutes(/*dispatch*/) {
   return (
     <Route path="/" component={App} onEnter={loadAppState}>
       <IndexRoute component={Main} />
-      <Route path="profile" component={Profile} />
+      <Route path="profile" component={Profile} onEnter={requireAuthAndLoad} />
       <Route path="login" component={Login} />
       <Route path="favourites" component={Favourites} />
       <Route path="*" component={ErrorPage} />

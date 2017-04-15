@@ -8,7 +8,8 @@ const Item = new Schema({
   picture: String,
   likesCount: Number,
   likers: Array,
-  owner: String
+  owner: String,
+  ownerDp: String
 });
 
 module.exports = mongoose.model('Item', Item);
