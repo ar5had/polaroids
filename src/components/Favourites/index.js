@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import loadPageProps from '../../utils/loadPageProps';
 import Item from '../Item';
 
 import './styles.sass';
@@ -7,6 +8,10 @@ import './styles.sass';
 class Favourites extends Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    loadPageProps('Favourites - Polaroids');
   }
 
   render() {

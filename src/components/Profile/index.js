@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
+import loadPageProps from '../../utils/loadPageProps';
 import BasicInfo from '../BasicInfo/index';
 import OtherInfo from '../OtherInfo/index';
 import './styles.sass';
 
 class Profile extends Component {
   componentDidMount() {
-    document.body.scrollTop = 0;
-    document.querySelector('.menu').classList.remove('open');
+    loadPageProps('Profile - Polaroids');
   }
   render() {
     return (

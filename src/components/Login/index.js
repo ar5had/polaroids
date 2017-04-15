@@ -7,7 +7,7 @@ import loadPageProps from '../../utils/loadPageProps';
 
 class Login extends Component {
   componentDidMount() {
-    loadPageProps('Login - Trader');
+    loadPageProps('Login - Polaroids');
   }
 
   render() {

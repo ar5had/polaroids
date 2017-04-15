@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import './styles.sass';
 
+import loadPageProps from '../../utils/loadPageProps';
 import { TWO, ONE } from '../../constants';
 import Item from '../Item/index';
 
@@ -15,8 +16,7 @@ class Homepage extends Component {
   }
 
   componentDidMount() {
-    document.body.scrollTop = 0;
-    document.querySelector('.menu').classList.remove('open');
+    loadPageProps('Polaroids');
     window.addEventListener('resize', () => {
       clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {

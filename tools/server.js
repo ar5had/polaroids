@@ -14,7 +14,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import authRoutes from '../server/authRoutes';
 
-// const api = require('../server/api');
+const api = require('../server/api');
 const environment = process.argv[2];
 const app = express();
 const server = http.createServer(app);
@@ -97,7 +97,7 @@ conn.on('error', console.error.bind(console, 'connection error:'));
 conn.once('open', () => {
   // passport auth routes
   authRoutes(app, passport);
-  // api(app);
+  api(app);
   runWebpack();
 });
 

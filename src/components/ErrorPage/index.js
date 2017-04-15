@@ -3,9 +3,9 @@ import './styles.sass';
 
 class ErrorPage extends Component {
   componentDidMount() {
-    document.body.scrollTop = 0;
-    document.querySelector('.menu').classList.remove('open');
+    loadPageProps('404 - Page Not Found!');
   }
+
   render() {
     return (
       <h3 className="error text-center">404(Page Not Found)</h3>
