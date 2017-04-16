@@ -30,7 +30,7 @@ module.exports = function (app) {
   };
 
   app.get('/isUserLoggedIn', isLoggedIn, (req, res) => {
-    res.json({ 'error': '', 'notificationsCount': req.user.notificationsCount });
+    res.json({ 'error': ''});
   });
 
   app.get('/api/getProfileData', isLoggedIn, (req, res) => {
@@ -38,76 +38,59 @@ module.exports = function (app) {
     res.json({ name, dp });
   });
 
-  // app.post('/api/setProfileData', isLoggedIn, (req, res) => {
-  //   const { landmark, city, state, pinCode, country, localAddress } = req.body;
-  //   const address = { landmark, city, state, pinCode, country, localAddress };
-  //   const phoneNo = req.body.phoneNo;
-  //   const email = req.body.email;
-  //   const newProfileData = req.query.edit === 'location' ? { address } : { phoneNo, email };
-  //   User.findByIdAndUpdate(req.user.id, newProfileData, { new: true })
-  //     .exec((err, doc) => {
-  //       if (err) {
-  //         res.status(500).send({ error: "Error happened while updating user info!" });
-  //       } else {
-  //         const { address, phoneNo, email } = doc;
-  //         res.json({ address, phoneNo, email });
-  //       }
-  //     });
-  // });
+  // add double check so that non-auth user can't post pic in any case
+  app.post('/api/addMyItem', isLoggedIn, (req, res) => {
+    upload(req, res, err => {
+      if (err) {
+        res.status(500).send('File upload failed.').end();
+      } else {
+        if (!req.file) {
+          return res.status(403).send('Please upload a picture of item!').end();
+        }
 
-  // app.post('/api/addMyItem', (req, res) => {
-  //   upload(req, res, err => {
-  //     if (err) {
-  //       res.status(500).send('File upload failed.').end();
-  //     } else {
-  //       if (!req.file) {
-  //         return res.status(403).send('Please upload a picture of item!').end();
-  //       }
+        if (!/^image\/(jpe?g|png|gif)$/i.test(req.file.mimetype)) {
+          return res.status(403).send('Please upload JPEG or PNG or GIF image file!').end();
+        }
 
-  //       if (!/^image\/(jpe?g|png|gif)$/i.test(req.file.mimetype)) {
-  //         return res.status(403).send('Please upload JPEG or PNG or GIF image file!').end();
-  //       }
+        const date = new Date();
+        const ownerInfo = { ownerId: req.user._id, ownerName: req.user.name, ownerDp: req.user.dp };
+        const data = objectAssign(
+          {},
+          req.body,
+          {
+            likers: [], key: date.getTime()
+          },
+          ownerInfo
+        );
+        const newItem = new Item(data);
 
-  //       const date = new Date();
-  //       const ownerInfo = { itemOwnerId: req.user._id, itemOwner: req.user.name };
-  //       const data = objectAssign(
-  //         {},
-  //         req.body,
-  //         {
-  //           itemAdditionDate: date.toDateString().slice(4),
-  //           itemRequests: [], key: date.getTime()
-  //         },
-  //         ownerInfo
-  //       );
-  //       const newItem = new Item(data);
+        cloudinary.uploader.upload(`${req.file.path}`, function (result) {
+          newItem.picture = result.secure_url;
+          newItem.save((err, doc) => {
+            if (err) {
+              console.error('Error happened while adding new myitem-', err);
+              res.status(500).send({ error: 'Some error happened while adding new item!' });
+            } else {
+              const item = objectAssign({}, doc.toObject());
+              delete item._id;
+              delete item.__v;
+              delete item.ownerId;
+              res.json(item);
+            }
+          });
 
-  //       cloudinary.uploader.upload(`${req.file.path}`, function (result) {
-  //         newItem.itemPic = result.secure_url;
-  //         newItem.save((err, doc) => {
-  //           if (err) {
-  //             console.error('Error happened while adding new myitem-', err);
-  //             res.status(500).send({ error: 'Some error happened while adding new item!' });
-  //           } else {
-  //             const item = objectAssign({}, doc.toObject());
-  //             delete item._id;
-  //             delete item.__v;
-  //             delete item.itemOwnerId;
-  //             res.json(item);
-  //           }
-  //         });
+          // clear the uploadDir
+          cp.exec('rm -r ' + uploadDir + '/*', err => {
+            if (err) {
+              console.error('Error happenned while clearing uploadDir-', err);
+            }
+          });
 
-  //         // clear the uploadDir
-  //         cp.exec('rm -r ' + uploadDir + '/*', err => {
-  //           if (err) {
-  //             console.error('Error happenned while clearing uploadDir-', err);
-  //           }
-  //         });
+        }, { public_id: `${date.getTime()}` });
 
-  //       }, { public_id: `${date.getTime()}` });
-
-  //     }
-  //   });
-  // });
+      }
+    });
+  });
 
   // app.get('/api/getMyItemsData', isLoggedIn, (req, res) => {
   //   Item.find({ itemOwnerId: req.user._id.toString() },
@@ -127,6 +110,7 @@ module.exports = function (app) {
   //     });
   // });
 
+  // add double check so that non-auth user can't delete pic in any case
   // app.delete('/api/deleteMyItem/:key', isLoggedIn, (req, res) => {
   //   cloudinary.uploader.destroy(`${req.params.key}`);
   //   Item.find({ key: req.params.key })

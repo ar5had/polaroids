@@ -6,10 +6,11 @@ const Schema = mongoose.Schema;
 const Item = new Schema({
   caption: String,
   picture: String,
-  likesCount: Number,
   likers: Array,
-  owner: String,
-  ownerDp: String
+  ownerId: String,
+  ownerDp: String,
+  ownerName: String,
+  key: Number
 });
 
 module.exports = mongoose.model('Item', Item);

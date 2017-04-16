@@ -7,7 +7,7 @@ import * as actions from '../../actions/appActions';
 
 import './styles.sass';
 
-import AddItemPage from '../../components/AddItemPage/index';
+import AddItemPage from '../AddItemPage/index';
 
 import pimg from '../../assets/images/polaroidb.svg';
 import addimg from '../../assets/images/add.svg';
