@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 
-import App from './components/App/index';
-import Main from './components/Main/index';
-import Login from './components/Login/index';
-import Favourites from './components/Favourites/index';
-import ErrorPage from './components/ErrorPage/index';
+import App from './components/App';
+import Login from './components/Login';
+import ErrorPage from './components/ErrorPage';
 
-import Profile from './containers/Profile/index';
+import Favourites from './containers/Favourites';
+import Main from './containers/Main';
+import Profile from './containers/Profile';
 
 import CheckAuth from './utils/checkAuth';
 import { getInitialState } from './actions/commonActions';

@@ -11,7 +11,7 @@ const uploadDir = path.resolve(process.cwd(), 'uploads');
 const upload = multer({
   dest: uploadDir,
   limits: { fileSize: 512000 }
-}).single('itemPic');
+}).single('picture');
 
 module.exports = function (app) {
 
@@ -75,6 +75,8 @@ module.exports = function (app) {
               delete item._id;
               delete item.__v;
               delete item.ownerId;
+              item.likersCount = item.likers.length;
+              delete item.likers;
               res.json(item);
             }
           });

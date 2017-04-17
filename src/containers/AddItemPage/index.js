@@ -37,12 +37,14 @@ class AddItemPage extends Component {
     [].forEach.call(event.target, (elem) => {
       if (elem.getAttribute('type') !== 'submit') {
         if (elem.getAttribute('type') === 'file') {
-          if (!elem.files[0] && !emptyFieldMsg)
+          if (!elem.files[0] && !emptyFieldMsg) {
             emptyFieldMsg = 'PHOTO';
+          }
           fd.append(elem.getAttribute('name'), elem.files[0]);
         } else {
-          if (!elem.value)
+          if (!elem.value) {
             emptyFieldMsg = 'CAPTION';
+          }
           fd.append(elem.getAttribute('name'), elem.value);
         }
       }
@@ -57,7 +59,7 @@ class AddItemPage extends Component {
       this.showErrorMessage.bind(this),
       this.hideWaitingMsg.bind(this)
     );
-    // this.showWaitingMsg();
+    this.showWaitingMsg();
 
   }
 
@@ -163,13 +165,13 @@ class AddItemPage extends Component {
                     <img src={addImg} />
                   </div>
 
-                  <input name="itemPic" type="file"
+                  <input name="picture" type="file"
                     onChange={this.handleItemImgLoad.bind(this)}
                     id="itemPicInput"
-                    accept="image/jpeg, image/png, image/gif" ref={node => this.picInput = node} required
+                    accept="image/jpeg, image/png" ref={node => this.picInput = node}
                   />
                   <input className={`captionText pmf ${this.getOtherClass('CAPTION')}`} type="text" autoComplete="off"
-                    required="true" placeholder="Caption" name="Caption"
+                    required="true" placeholder="Caption" name="caption"
                   />
                   <input type="submit" ref={node => (this.submitItemFormBtn = node)} style={{ display: 'none' }} />
                 </div>

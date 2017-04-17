@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import loadPageProps from '../../utils/loadPageProps';
-import Item from '../Item';
+import Item from '../../components/Item';
 
 import './styles.sass';
 

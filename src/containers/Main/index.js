@@ -4,7 +4,7 @@ import './styles.sass';
 
 import loadPageProps from '../../utils/loadPageProps';
 import { TWO, ONE } from '../../constants';
-import Item from '../Item/index';
+import Item from '../../components/Item/index';
 
 class Homepage extends Component {
   constructor(props) {
