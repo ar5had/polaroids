@@ -76,6 +76,7 @@ module.exports = function (app) {
               delete item.__v;
               delete item.ownerId;
               item.likersCount = item.likers.length;
+              item.hasUserLiked = item.likers.includes(req.user._id);
               delete item.likers;
               res.json(item);
             }
@@ -126,22 +127,22 @@ module.exports = function (app) {
   //     });
   // });
 
-  // app.get('/api/getAllItemsData', (req, res) => {
-  //   Item.find({},
-  //     ['key', 'itemName', 'itemCurrency', 'itemPrice', 'itemPic'],
-  //     {
-  //       sort: { key: -1 }
-  //     }
-  //   )
-  //     .exec((err, docs) => {
-  //       if (err) {
-  //         console.error('Error happened while loading allItems-', err);
-  //         res.sendStatus(500);
-  //       } else {
-  //         res.json(docs);
-  //       }
-  //     });
-  // });
+  app.get('/api/getAllItemsData', (req, res) => {
+    Item.find({},
+      ['key', 'itemName', 'itemCurrency', 'itemPrice', 'itemPic'],
+      {
+        sort: { key: -1 }
+      }
+    )
+      .exec((err, docs) => {
+        if (err) {
+          console.error('Error happened while loading allItems-', err);
+          res.sendStatus(500);
+        } else {
+          res.json(docs);
+        }
+      });
+  });
 
   // app.get('/api/getIndividualItemData/:key', (req, res) => {
   //   Item.findOne({ key: req.params.key },

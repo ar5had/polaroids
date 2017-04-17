@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 import './styles.sass';
 
 class Item extends Component {
-  getBtns() {
+  getBtns(hasUserLiked, likesCount) {
     // change this line with some redux server code
     const ownItem = window.location.pathname === '/profile';
     if(ownItem) {
       return (
         <div className="pauthinfo">
+          {likesCount}
           <span className="delete-button"
             ref={node => { this.dbtn = node; }}
             onClick={() => {
@@ -21,7 +22,7 @@ class Item extends Component {
     }
     return (
       <div className="pauthinfo">
-        <span className="heart-button"
+        <span className="heart-buttons"
           ref={node => { this.hbtn = node; }}
           onClick={() => {
             this.hbtn.classList.toggle('liked');
@@ -34,18 +35,36 @@ class Item extends Component {
     );
   }
   render() {
+    const {
+      caption,
+      likesCount,
+      hasUserLiked,
+      picture,
+      // photoIds
+    } = this.props;
+
     return (
       <div className="item">
-        <div className="picture" />
+        <div className="picture"
+          style={{ backgroundImage: `url(${picture})` }}
+        />
         <div className="info">
-          <span className="pmf pname">Some polaroid</span>
+          <span className="pmf pname">{caption}</span>
           <div className="pauthinfo">
-            {this.getBtns()}
+            {this.getBtns(hasUserLiked, likesCount)}
           </div>
         </div>
       </div>
     );
   }
 }
+
+Item.propTypes = {
+  photoId: PropTypes.number.isRequired,
+  picture: PropTypes.string.isRequired,
+  caption: PropTypes.string.isRequired,
+  hasUserLiked: PropTypes.bool.isRequired,
+  likesCount: PropTypes.number.isRequired
+};
 
 export default Item;
