@@ -2,9 +2,15 @@
 
 .main
   padding: 1rem 20px
-  .itemsWrapper
+  min-height: 40vh
+
+  .noItemHeadingWrapper, .itemsWrapper
     display: flex
     flex-wrap: wrap
+  .noItemHeadingWrapper
+    min-height: 30vh
+    align-items: center
+    justify-content: center
   .itemsWrapper.ONE
     .item
       flex: 0 0 100% !important
@@ -45,3 +51,10 @@
 
   .selectedView  .square
     background: $black
+
+  .noItemHeading
+    font-size: 1rem
+    font-family: 'Permanent Marker'
+    margin-top: 20px
+    color: lighten($blue, 20%)
+

@@ -82,7 +82,7 @@ class Homepage extends Component {
   getAllItemsData() {
     const data = this.props.state;
     if(data.length > 0) {
-      return data.map((e) =>
+      const items = data.map((e) =>
         <Item
           key={e.key}
           photoId={e.key}
@@ -92,8 +92,17 @@ class Homepage extends Component {
           likesCount={e.likesCount}
         />
       );
+      return (
+        <div className={`itemsWrapper ${this.state.activeView}`}>
+          {items}
+        </div>
+      );
     } else {
-      return <h3 className="noItemHeading"> No items found!</h3>;
+      return (
+        <div className="noItemHeadingWrapper">
+          <h3 className="noItemHeading pmf"> No posts found!</h3>
+        </div>
+      );
     }
   }
 
@@ -104,9 +113,7 @@ class Homepage extends Component {
           <span className="title">All Posts</span>
           {this.getViewChanger()}
         </h4>
-        <div className={`itemsWrapper ${this.state.activeView}`}>
-          {this.getAllItemsData()}
-        </div>
+        {this.getAllItemsData()}
       </main>
     );
   }
