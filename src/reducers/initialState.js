@@ -1,11 +1,12 @@
 export default {
   profile: {
     dp: '',
-    name: ''
+    name: '',
+    myItems: []
   },
   app: {
     loggedIn: false
   },
-  myItems: [],
+  favourites: [],
   allItems: []
 };

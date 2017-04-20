@@ -4,13 +4,12 @@ import { Link } from 'react-router';
 import './styles.sass';
 
 class Item extends Component {
-  getBtns(hasUserLiked, likesCount) {
+  getBtns(hasUserLiked, likesCount, ownerName, ownerDp) {
     // change this line with some redux server code
-    const ownItem = window.location.pathname === '/profile';
+    const ownItem = ownerName === undefined;
     if(ownItem) {
       return (
         <div className="pauthinfo">
-          {likesCount}
           <span className="delete-button"
             ref={node => { this.dbtn = node; }}
             onClick={() => {
@@ -20,16 +19,18 @@ class Item extends Component {
         </div>
       );
     }
+
     return (
       <div className="pauthinfo">
-        <span className="heart-buttons"
+        {likesCount ? likesCount : ''}
+        <span className="heart-button"
           ref={node => { this.hbtn = node; }}
           onClick={() => {
             this.hbtn.classList.toggle('liked');
           }}
         />
         <Link className="author-img">
-          <span>Arshad Khan </span>
+          <span style={{backgroundImage: `url(${ownerDp})`}}>{ownerName}</span>
         </Link>
       </div>
     );
@@ -41,6 +42,8 @@ class Item extends Component {
       hasUserLiked,
       picture,
       // photoIds
+      ownerName,
+      ownerDp
     } = this.props;
 
     return (
@@ -51,7 +54,7 @@ class Item extends Component {
         <div className="info">
           <span className="pmf pname">{caption}</span>
           <div className="pauthinfo">
-            {this.getBtns(hasUserLiked, likesCount)}
+            {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp)}
           </div>
         </div>
       </div>
@@ -60,11 +63,13 @@ class Item extends Component {
 }
 
 Item.propTypes = {
-  photoId: PropTypes.number.isRequired,
-  picture: PropTypes.string.isRequired,
-  caption: PropTypes.string.isRequired,
-  hasUserLiked: PropTypes.bool.isRequired,
-  likesCount: PropTypes.number.isRequired
+  photoId: PropTypes.number,
+  picture: PropTypes.string,
+  caption: PropTypes.string,
+  hasUserLiked: PropTypes.bool,
+  likesCount: PropTypes.number,
+  ownerName: PropTypes.string,
+  ownerDp: PropTypes.string
 };
 
 export default Item;

@@ -4,3 +4,6 @@ export const ADD_MY_ITEM = 'ADD_MY_ITEM';
 export const DELETE_MY_ITEM = 'DELETE_MY_ITEM';
 export const UPDATE_MYITEMS_STATE = 'UPDATE_MYITEMS_STATE';
 export const UPDATE_ALLITEMS_STATE = 'UPDATE_ALLITEMS_STATE';
+export const ADD_ONE_ITEM = "ADD_ONE_ITEM";
+export const ADD_FAV_ITEM = "ADD_FAV_ITEM";
+export const REMOVE_FAV_ITEM = "REMOVE_FAV_ITEM";

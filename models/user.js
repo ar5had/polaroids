@@ -7,6 +7,7 @@ const User = new Schema({
   name: String,
   dp: String,
   items: Array,
+  likedItems: Array,
   google: {
     id: String,
     token: String,

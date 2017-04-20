@@ -27,6 +27,12 @@ export function addMyItem(itemData, closeModal, showErrorMsg, hideWaitingMsg) {
             payload: data
           }
         );
+        dispatch(
+          {
+            type: types.ADD_ONE_ITEM,
+            payload: data
+          }
+        );
         hideWaitingMsg();
         closeModal();
       })

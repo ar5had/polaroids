@@ -21,7 +21,9 @@ class Profile extends Component {
           name={this.props.state.name}
           dp={this.props.state.dp}
         />
-        <OtherInfo />
+        <OtherInfo
+          items={this.props.state.myItems}
+        />
       </div>
     );
   }

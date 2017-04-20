@@ -50,10 +50,10 @@ export default function AllRoutes(dispatch) {
     );
   };
 
-  // const loadAllItems = (nextState, replace, cb) => {
-  //   document.body.style.cursor = 'wait';
-  //   getInitialState(cb, 'allItems')(dispatch);
-  // };
+  const loadAllItems = (nextState, replace, cb) => {
+    document.body.style.cursor = 'wait';
+    getInitialState(cb, 'allItems')(dispatch);
+  };
 
   // const loadIndividualItem = (nextState, replace, cb) => {
   //   document.body.style.cursor = 'wait';
@@ -62,34 +62,34 @@ export default function AllRoutes(dispatch) {
   //   loadIndividualItemState(cb, replace, 'individualItem', id)(dispatch);
   // };
 
-  // const requireNoAuth = (nextState, replace, cb) => {
-  //   document.body.style.cursor = 'wait';
-  //   // CheckAuth take two function as parameter
-  //   // one for authorized req
-  //   // other for unauthorized req
+  const requireNoAuth = (nextState, replace, cb) => {
+    document.body.style.cursor = 'wait';
+    // CheckAuth take two function as parameter
+    // one for authorized req
+    // other for unauthorized req
 
-  //   // If user is already authorized then
-  //   // send him back to home(/)
-  //   // else let him goto login page
-  //   CheckAuth(
-  //     () => {
-  //       replace({
-  //         pathname: '/',
-  //         state: { nextPathname: nextState.location.pathname }
-  //       });
-  //       cb();
-  //     },
-  //     () => {
-  //       cb();
-  //     },
-  //   );
-  // };
+    // If user is already authorized then
+    // send him back to home(/)
+    // else let him goto login page
+    CheckAuth(
+      () => {
+        replace({
+          pathname: '/',
+          state: { nextPathname: nextState.location.pathname }
+        });
+        cb();
+      },
+      () => {
+        cb();
+      },
+    );
+  };
 
   return (
     <Route path="/" component={App} onEnter={loadAppState}>
-      <IndexRoute component={Main} />
+      <IndexRoute component={Main} onEnter={loadAllItems} />
       <Route path="profile" component={Profile} onEnter={requireAuthAndLoad} />
-      <Route path="login" component={Login} />
+      <Route path="login" component={Login} onEnter={requireNoAuth} />
       <Route path="favourites" component={Favourites} />
       <Route path="*" component={ErrorPage} />
     </Route>

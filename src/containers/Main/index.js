@@ -81,6 +81,7 @@ class Homepage extends Component {
 
   getAllItemsData() {
     const data = this.props.state;
+
     if(data.length > 0) {
       const items = data.map((e) =>
         <Item
@@ -88,8 +89,10 @@ class Homepage extends Component {
           photoId={e.key}
           picture={e.picture}
           caption={e.caption}
-          hasUserLiked={e.hasUserLiked}
+          hasUserLiked={true}
           likesCount={e.likesCount}
+          ownerName={e.ownerName}
+          ownerDp={e.ownerDp}
         />
       );
       return (
@@ -100,7 +103,7 @@ class Homepage extends Component {
     } else {
       return (
         <div className="noItemHeadingWrapper">
-          <h3 className="noItemHeading pmf"> No posts found!</h3>
+          <h3 className="noItemHeading pmf"> No post found!</h3>
         </div>
       );
     }

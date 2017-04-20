@@ -24,6 +24,9 @@
     .pauthinfo
       display: flex
       align-items: center
+      .heart-button
+        background-image: url('../../assets/images/heart.png')
+        margin-left: 10px
       .heart-button.liked
         background:
           color: #f37070
@@ -38,7 +41,6 @@
         line-height: 1
         cursor: pointer
         background:
-          image: url('../../assets/images/heart.png')
           repeat: no-repeat
           color: lighten($light-grey, 20%)
           size: 50%
@@ -57,7 +59,7 @@
         margin-left: 10px
         span
           background:
-            image: url('http://iamarshad.com/images/asd.jpg')
+            color: #eee
             repeat: no-repeat
             size: 100%
           overflow: hidden
@@ -69,6 +71,6 @@
   .picture
     padding-bottom: 100%
     background:
-      image: url('https://unsplash.it/200/300?random')
+      color: #eee
       repeat: no-repeat
       size: 100% 100%

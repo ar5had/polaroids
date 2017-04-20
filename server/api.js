@@ -35,7 +35,22 @@ module.exports = function (app) {
 
   app.get('/api/getProfileData', isLoggedIn, (req, res) => {
     const { name, dp } = req.user;
-    res.json({ name, dp });
+    Item
+      .find(
+        { ownerId: req.user._id.toString() },
+        ['key', 'caption', 'picture'],
+        {
+          sort: { key: -1 }
+        }
+      )
+      .exec((err, docs) => {
+        if (err) {
+          console.error('Error happened while loading myItems-', err);
+          res.status(500).send({ error: 'Some error happened while loading all of your items!' });
+        } else {
+          res.json({ name, dp, myItems: docs });
+        }
+      });
   });
 
   // add double check so that non-auth user can't post pic in any case
@@ -58,7 +73,7 @@ module.exports = function (app) {
           {},
           req.body,
           {
-            likers: [], key: date.getTime()
+            likesCount: 0, key: date.getTime()
           },
           ownerInfo
         );
@@ -75,9 +90,6 @@ module.exports = function (app) {
               delete item._id;
               delete item.__v;
               delete item.ownerId;
-              item.likersCount = item.likers.length;
-              item.hasUserLiked = item.likers.includes(req.user._id);
-              delete item.likers;
               res.json(item);
             }
           });
@@ -95,24 +107,6 @@ module.exports = function (app) {
     });
   });
 
-  // app.get('/api/getMyItemsData', isLoggedIn, (req, res) => {
-  //   Item.find({ itemOwnerId: req.user._id.toString() },
-  //     ['key', 'itemName', 'itemPic', 'itemCurrency', 'itemAdditionDate',
-  //       'itemPrice', 'itemDescription', 'itemTags'],
-  //     {
-  //       sort: { key: -1 }
-  //     }
-  //   )
-  //     .exec((err, docs) => {
-  //       if (err) {
-  //         console.error('Error happened while loading myItems-', err);
-  //         res.status(500).send({ error: 'Some error happened while loading all of your items!' });
-  //       } else {
-  //         res.json(docs);
-  //       }
-  //     });
-  // });
-
   // add double check so that non-auth user can't delete pic in any case
   // app.delete('/api/deleteMyItem/:key', isLoggedIn, (req, res) => {
   //   cloudinary.uploader.destroy(`${req.params.key}`);
@@ -129,7 +123,7 @@ module.exports = function (app) {
 
   app.get('/api/getAllItemsData', (req, res) => {
     Item.find({},
-      ['key', 'itemName', 'itemCurrency', 'itemPrice', 'itemPic'],
+      ['key', 'caption', 'picture', 'ownerDp', 'ownerName', 'likesCount'],
       {
         sort: { key: -1 }
       }
