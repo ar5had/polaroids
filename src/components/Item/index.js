@@ -6,14 +6,22 @@ import './styles.sass';
 class Item extends Component {
   getBtns(hasUserLiked, likesCount, ownerName, ownerDp) {
     // change this line with some redux server code
-    const ownItem = ownerName === undefined;
-    if(ownItem) {
+    if(this.props.ownItem) {
       return (
         <div className="pauthinfo">
-          <span className="delete-button"
-            ref={node => { this.dbtn = node; }}
+          {likesCount ? likesCount : ''}
+          <span className="heart-button"
+            ref={node => { this.hbtn = node; }}
             onClick={() => {
-              this.dbtn.classList.add('deleted');
+              this.hbtn.classList.toggle('liked');
+            }}
+          />
+          <span className="delete-button"
+            onClick={(e) => {
+              const parent = e.target.parentNode.parentNode.parentNode;
+              parent.classList.add('deleted');
+              console.log(this.props.deleteItem);
+              this.props.deleteItem(this.props.photoId, parent);
             }}
           />
         </div>
@@ -35,6 +43,7 @@ class Item extends Component {
       </div>
     );
   }
+
   render() {
     const {
       caption,
@@ -53,9 +62,7 @@ class Item extends Component {
         />
         <div className="info">
           <span className="pmf pname">{caption}</span>
-          <div className="pauthinfo">
-            {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp)}
-          </div>
+          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp)}
         </div>
       </div>
     );
@@ -69,7 +76,10 @@ Item.propTypes = {
   hasUserLiked: PropTypes.bool,
   likesCount: PropTypes.number,
   ownerName: PropTypes.string,
-  ownerDp: PropTypes.string
+  ownerDp: PropTypes.string,
+  deleteItem: PropTypes.func,
+  location: PropTypes.string,
+  ownItem: PropTypes.bool
 };
 
 export default Item;

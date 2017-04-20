@@ -19,6 +19,12 @@ class OtherInfo extends Component {
           photoId={e.key}
           picture={e.picture}
           caption={e.caption}
+          hasUserLiked={true}
+          likesCount={e.likesCount}
+          ownerName={e.ownerName}
+          ownerDp={e.ownerDp}
+          deleteItem={this.props.deleteItem}
+          ownItem={this.props.ownItem}
         />
       );
       return (
@@ -47,7 +53,8 @@ class OtherInfo extends Component {
 
 OtherInfo.propTypes = {
   items: PropTypes.array.isRequired,
-
+  deleteItem: PropTypes.func,
+  ownItem: PropTypes.bool
 };
 
 export default OtherInfo;

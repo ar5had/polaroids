@@ -62,17 +62,18 @@ export function deleteMyItem(key, node) {
           throw new Error(response);
         } else {
           // hides item in fancy way
-          objectAssign(node.style, { opacity: "0", marginBottom: `-${node.offsetHeight + 14}px`, zIndex: '-22' });
+          objectAssign(node.style, { opacity: "0" });
           setTimeout(() => {
             dispatch({
-                type: types.DELETE_MY_ITEM,
-                payload: key
-              });
-          }, 1000);
+              type: types.DELETE_MY_ITEM,
+              payload: key
+            });
+          }, 400);
         }
       })
       .catch(err => {
         /* eslint-disable no-console */
+        node.classList.remove('deleted');
         console.error(`Got error:${err} while dispatching DELETE_MY_ITEM!`);
       });
   };

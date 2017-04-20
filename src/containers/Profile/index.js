@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import * as actions from '../../actions/profileActions';
+import * as actions from '../../actions/myItemsActions';
 
 import loadPageProps from '../../utils/loadPageProps';
 import BasicInfo from '../../components/BasicInfo/index';
@@ -23,6 +23,8 @@ class Profile extends Component {
         />
         <OtherInfo
           items={this.props.state.myItems}
+          deleteItem={this.props.actions.deleteMyItem}
+          ownItem={this.props.location.pathname === '/profile'}
         />
       </div>
     );
@@ -31,7 +33,8 @@ class Profile extends Component {
 
 Profile.propTypes = {
   state: PropTypes.object.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({ state: state.profileData });

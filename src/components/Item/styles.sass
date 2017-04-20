@@ -10,6 +10,7 @@
   margin-bottom: 40px
   box-shadow: 0 0 10px rgba(0, 0, 0, .1)
   flex: 0 0 calc(100%)
+  transition: opacity .2s ease-in-out
   &:nth-child(2n)
     margin-left: 0
   .info
@@ -30,9 +31,6 @@
       .heart-button.liked
         background:
           color: #f37070
-      .delete-button.deleted
-        background:
-          color: $black
       .heart-button, .delete-button
         line-height: 1
         border: solid 2px transparent
@@ -51,6 +49,7 @@
         display: block
         border-radius: 50%
       .delete-button
+        margin-left: 10px
         border: none
         background-image: url('../../assets/images/delete.png')
         width: 24px
@@ -74,3 +73,10 @@
       color: #eee
       repeat: no-repeat
       size: 100% 100%
+
+.item.deleted
+  opacity: .6
+  .delete-button
+    background:
+      color: $black !important
+    cursor: not-allowed !important
