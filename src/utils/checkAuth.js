@@ -15,8 +15,7 @@ export default function CheckAuth(success, failure) {
       if (res.error === 'UNAUTHORIZED') {
         failure();
       } else {
-        //success(res.notificationsCount);
-        success();
+        success(res.favourites);
       }
     })
     .catch(() => {

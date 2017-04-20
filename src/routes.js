@@ -18,12 +18,12 @@ export default function AllRoutes(dispatch) {
   const loadAppState = (nextState, replace, cb) => {
     document.body.style.cursor = 'wait';
     CheckAuth(
-      () => {
-        updateAppState({ loggedIn: true })(dispatch);
+      (favList) => {
+        updateAppState({ loggedIn: true }, favList)(dispatch);
         cb();
       },
       () => {
-        updateAppState({ loggedIn: false})(dispatch);
+        updateAppState({ loggedIn: false })(dispatch);
         cb();
       }
     );

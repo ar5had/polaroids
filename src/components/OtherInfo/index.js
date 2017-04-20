@@ -11,22 +11,26 @@ class OtherInfo extends Component {
 
   getAllItemsData() {
     const data = this.props.items;
-
+    const favItems = this.props.favItems;
     if(data.length > 0) {
-      const items = data.map((e) =>
-        <Item
-          key={e.key}
-          photoId={e.key}
-          picture={e.picture}
-          caption={e.caption}
-          hasUserLiked={true}
-          likesCount={e.likesCount}
-          ownerName={e.ownerName}
-          ownerDp={e.ownerDp}
-          deleteItem={this.props.deleteItem}
-          ownItem={this.props.ownItem}
-        />
-      );
+      const items = data.map((e) => {
+        const hasUserLiked = favItems.includes(e.key);
+        return (
+          <Item
+            key={e.key}
+            photoId={e.key}
+            picture={e.picture}
+            caption={e.caption}
+            hasUserLiked={hasUserLiked}
+            likesCount={e.likesCount}
+            ownerName={e.ownerName}
+            ownerDp={e.ownerDp}
+            deleteItem={this.props.deleteItem}
+            ownItem={this.props.ownItem}
+            toggleFavItem={this.props.toggleFavItem}
+          />
+        );
+      });
       return (
         <div className={`myPolaroidsWrapper`}>
           {items}
@@ -54,7 +58,9 @@ class OtherInfo extends Component {
 OtherInfo.propTypes = {
   items: PropTypes.array.isRequired,
   deleteItem: PropTypes.func,
-  ownItem: PropTypes.bool
+  ownItem: PropTypes.bool,
+  favItems: PropTypes.array,
+  toggleFavItem: PropTypes.func.isRequired,
 };
 
 export default OtherInfo;

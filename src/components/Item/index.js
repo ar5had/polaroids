@@ -4,23 +4,22 @@ import { Link } from 'react-router';
 import './styles.sass';
 
 class Item extends Component {
-  getBtns(hasUserLiked, likesCount, ownerName, ownerDp) {
+  getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId) {
     // change this line with some redux server code
     if(this.props.ownItem) {
       return (
         <div className="pauthinfo">
           {likesCount ? likesCount : ''}
-          <span className="heart-button"
+          <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
             ref={node => { this.hbtn = node; }}
-            onClick={() => {
-              this.hbtn.classList.toggle('liked');
+            onClick={(e) => {
+              this.props.toggleFavItem(photoId, e.target);
             }}
           />
           <span className="delete-button"
             onClick={(e) => {
               const parent = e.target.parentNode.parentNode.parentNode;
               parent.classList.add('deleted');
-              console.log(this.props.deleteItem);
               this.props.deleteItem(this.props.photoId, parent);
             }}
           />
@@ -31,10 +30,9 @@ class Item extends Component {
     return (
       <div className="pauthinfo">
         {likesCount ? likesCount : ''}
-        <span className="heart-button"
-          ref={node => { this.hbtn = node; }}
-          onClick={() => {
-            this.hbtn.classList.toggle('liked');
+        <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
+          onClick={(e) => {
+            this.props.toggleFavItem(photoId, e.target);
           }}
         />
         <Link className="author-img">
@@ -50,11 +48,10 @@ class Item extends Component {
       likesCount,
       hasUserLiked,
       picture,
-      // photoIds
+      photoId,
       ownerName,
       ownerDp
     } = this.props;
-
     return (
       <div className="item">
         <div className="picture"
@@ -62,7 +59,7 @@ class Item extends Component {
         />
         <div className="info">
           <span className="pmf pname">{caption}</span>
-          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp)}
+          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId)}
         </div>
       </div>
     );
@@ -79,7 +76,8 @@ Item.propTypes = {
   ownerDp: PropTypes.string,
   deleteItem: PropTypes.func,
   location: PropTypes.string,
-  ownItem: PropTypes.bool
+  ownItem: PropTypes.bool,
+  toggleFavItem: PropTypes.func.isRequired
 };
 
 export default Item;

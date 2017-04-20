@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as actions from '../../actions/myItemsActions';
+import { toggleFavItem } from '../../actions/favActions';
 
 import loadPageProps from '../../utils/loadPageProps';
 import BasicInfo from '../../components/BasicInfo/index';
@@ -25,6 +26,8 @@ class Profile extends Component {
           items={this.props.state.myItems}
           deleteItem={this.props.actions.deleteMyItem}
           ownItem={this.props.location.pathname === '/profile'}
+          favItems={this.props.favItems}
+          toggleFavItem={this.props.toggleFavItem}
         />
       </div>
     );
@@ -34,11 +37,13 @@ class Profile extends Component {
 Profile.propTypes = {
   state: PropTypes.object.isRequired,
   actions: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired
+  location: PropTypes.object.isRequired,
+  toggleFavItem: PropTypes.func.isRequired,
+  favItems: PropTypes.array.isRequired
 };
 
-const mapStateToProps = state => ({ state: state.profileData });
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
+const mapStateToProps = state => ({ state: state.profileData, favItems: state.favourites });
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch), toggleFavItem: bindActionCreators(toggleFavItem, dispatch) });
 
 export default connect(
   mapStateToProps,

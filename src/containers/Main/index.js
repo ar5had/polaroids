@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import './styles.sass';
 
 import * as actions from '../../actions/myItemsActions';
+import { toggleFavItem } from '../../actions/favActions';
 import loadPageProps from '../../utils/loadPageProps';
 import { TWO, ONE } from '../../constants';
 import Item from '../../components/Item/index';
@@ -81,20 +82,24 @@ class Homepage extends Component {
 
   getAllItemsData() {
     const data = this.props.state;
-
-    if(data.length > 0) {
-      const items = data.map((e) =>
-        <Item
-          key={e.key}
-          photoId={e.key}
-          picture={e.picture}
-          caption={e.caption}
-          hasUserLiked={true}
-          likesCount={e.likesCount}
-          ownerName={e.ownerName}
-          ownerDp={e.ownerDp}
-        />
-      );
+    const { favItems } = this.props;
+    if (data.length > 0) {
+      const items = data.map((e) => {
+        const hasUserLiked = favItems.includes(parseInt(e.key,10));
+        return (
+          <Item
+            key={e.key}
+            photoId={e.key}
+            picture={e.picture}
+            caption={e.caption}
+            hasUserLiked={hasUserLiked}
+            likesCount={e.likesCount}
+            ownerName={e.ownerName}
+            ownerDp={e.ownerDp}
+            toggleFavItem={this.props.toggleFavItem}
+          />
+        );
+      });
       return (
         <div className={`itemsWrapper ${this.state.activeView}`}>
           {items}
@@ -125,12 +130,14 @@ class Homepage extends Component {
 
 Homepage.propTypes = {
   state: PropTypes.array.isRequired,
-  actions: PropTypes.object.isRequired
+  actions: PropTypes.object.isRequired,
+  toggleFavItem: PropTypes.func.isRequired,
+  favItems: PropTypes.array.isRequired
 };
 
-const mapStateToProps = state => ({ state: state.allItemsData });
+const mapStateToProps = state => ({ state: state.allItemsData, favItems: state.favourites });
 
-const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch) });
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch), toggleFavItem: bindActionCreators(toggleFavItem, dispatch) });
 
 export default connect(
   mapStateToProps,

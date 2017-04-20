@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { toggleFavItem } from '../../actions/favActions';
 import loadPageProps from '../../utils/loadPageProps';
 import Item from '../../components/Item';
 
@@ -26,4 +29,14 @@ class Favourites extends Component {
   }
 }
 
-export default Favourites;
+Favourites.propTypes = {
+  state: PropTypes.object.isRequired,
+  actions: PropTypes.object.isRequired,
+  toggleFav: PropTypes.func.isRequired,
+  favItems: PropTypes.array.isRequired
+};
+
+const mapStateToProps = (state) => ({ state: state.appData.favourites });
+const mapDispatchToProps = (dispatch) => ({toggleFavItem: bindActionCreators(toggleFavItem, dispatch)});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Favourites);

@@ -7,7 +7,8 @@ const User = new Schema({
   name: String,
   dp: String,
   items: Array,
-  likedItems: Array,
+  likedItems: [Number],
+  userId: String,
   google: {
     id: String,
     token: String,
@@ -23,6 +24,14 @@ const User = new Schema({
     token: String,
     email: String
   }
+});
+
+// using es5 style function syntax so that `this` is bound
+User.pre('save', function(next) {
+  // get unique id
+  const userId = new Date().getTime().toString();
+  this.userId = userId;
+  next();
 });
 
 module.exports = mongoose.model('User', User);

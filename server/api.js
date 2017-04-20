@@ -1,4 +1,4 @@
-const User = require('../models/user');
+// const User = require('../models/user');
 const Item = require('../models/item');
 const objectAssign = require('object-assign');
 const cloudinary = require('cloudinary');
@@ -12,6 +12,25 @@ const upload = multer({
   dest: uploadDir,
   limits: { fileSize: 512000 }
 }).single('picture');
+
+const sendProfileData = (req, res) => {
+  const { name, dp } = req.user;
+  Item.find(
+    { ownerId: req.profileId.toString() },
+    ['key', 'caption', 'picture'],
+    {
+      sort: { key: -1 }
+    }
+  )
+    .exec((err, docs) => {
+      if (err) {
+        console.error('Error happened while loading myItems-', err);
+        res.status(500).send({ error: 'Some error happened while loading all of your items!' });
+      } else {
+        res.json({ name, dp, myItems: docs });
+      }
+    });
+};
 
 module.exports = function (app) {
 
@@ -30,28 +49,13 @@ module.exports = function (app) {
   };
 
   app.get('/isUserLoggedIn', isLoggedIn, (req, res) => {
-    res.json({ 'error': ''});
+    res.json({ error: '', userId: req.user.userId.toString(), favourites: req.user.likedItems });
   });
 
-  app.get('/api/getProfileData', isLoggedIn, (req, res) => {
-    const { name, dp } = req.user;
-    Item
-      .find(
-        { ownerId: req.user._id.toString() },
-        ['key', 'caption', 'picture'],
-        {
-          sort: { key: -1 }
-        }
-      )
-      .exec((err, docs) => {
-        if (err) {
-          console.error('Error happened while loading myItems-', err);
-          res.status(500).send({ error: 'Some error happened while loading all of your items!' });
-        } else {
-          res.json({ name, dp, myItems: docs });
-        }
-      });
-  });
+  app.get('/api/getProfileData', isLoggedIn, (req, res, next) => {
+    req.profileId = req.user._id;
+    next();
+  }, sendProfileData);
 
   // add double check so that non-auth user can't post pic in any case
   app.post('/api/addMyItem', isLoggedIn, (req, res) => {
@@ -138,296 +142,39 @@ module.exports = function (app) {
       });
   });
 
-  // app.get('/api/getIndividualItemData/:key', (req, res) => {
-  //   Item.findOne({ key: req.params.key },
-  //     ['key', 'itemName', 'itemCurrency', 'itemPrice', 'itemPic', 'itemRequests',
-  //       'itemDescription', 'itemAdditionDate', 'itemTags', 'itemOwner', 'itemOwnerId']
-  //   )
-  //     .exec((err, doc) => {
-  //       if (err) {
-  //         console.error('Error happened while loading individual Item-', err);
-  //         res.sendStatus(500);
-  //       } else {
-  //         if (doc) {
+  app.post('/api/toggleFavItem', isLoggedIn, (req, res) => {
+    const photoId = req.body.photoId;
+    let count = 1;
+    const index = req.user.likedItems.indexOf(photoId);
 
-  //           const isSoldOut = doc.itemRequests.some(elem => elem.reqStatus === 'ACCEPTED');
+    if (index === -1) {
+      req.user.likedItems.push(photoId);
+    } else {
+      count = -1;
+      req.user.likedItems = req.user.likedItems.slice(0, index).concat(req.user.likedItems.slice(index + 1));
+    }
+    req.user.markModified('likedItems');
+    req.user.save(err => {
+      if (err) {
+        console.log('Error happened when changing likedItems list.');
+        res.status(500).send('Error while changing likedItems list of user model!').end();
+      } else {
+        res.json(req.user.likedItems);
 
-  //           const item = objectAssign({}, doc.toObject());
-  //           // checking whether the current user has requested the item
-  //           // in past or not
+        Item.findOneAndUpdate(
+            { key: parseInt(photoId, 10) },
+            { $inc: { likesCount: count } }
+        ).exec(err => {
+          if (err) {
+            console.error('Error happend while adding likes count!')
+          }
+        });
+      }
+    });
+  });
 
-  //           let itemRequestedByCurrentUser = false;
-
-  //           if (req.user) {
-  //             itemRequestedByCurrentUser = item.itemRequests.some(elem => (
-  //               elem.reqMaker.id === req.user._id.toString()
-  //             ));
-  //           }
-
-  //           const ownItem = item.itemOwnerId === (req.user && req.user._id.toString());
-  //           delete item._id;
-  //           delete item.itemOwnerId;
-  //           delete item.__v;
-  //           item.ownItem = ownItem;
-  //           res.json(objectAssign(item, { itemRequestedByCurrentUser, isSoldOut }));
-  //         } else {
-  //           res.sendStatus(400);
-  //         }
-  //       }
-  //     });
-  // });
-
-  // app.get('/api/requestitem/:key', isLoggedIn, (req, res) => {
-  //   Item.findOne({ key: parseInt(req.params.key, 10) }, (err, doc) => {
-  //     if (err) {
-  //       console.error('Error happened while loading allItems-', err);
-  //       res.sendStatus(500);
-  //     } else {
-
-  //       User.findOne({ _id: doc.itemOwnerId }, (err, doc) => {
-  //         if (!err) {
-  //           doc.notificationsCount += 1;
-  //           doc.markModified('notificationsCount');
-  //           doc.save();
-  //         }
-  //       });
-
-  //       // dont push itemRequest if its already there.
-  //       const itemRequestedByCurrentUser = doc.itemRequests.some(elem => (
-  //         elem.reqMaker.id === req.user._id.toString()
-  //       ));
-
-  //       // checkout whether item has already sold out or not.
-  //       const isSoldOut = doc.itemRequests.some(elem => elem.reqStatus === 'ACCEPTED');
-
-  //       if (isSoldOut) {
-  //         res.status(409).send('Item Sold Out');
-  //       } else if (!itemRequestedByCurrentUser) {
-  //         const itemRequest = {
-  //           reqMaker: {
-  //             uniqueId: new Date().getTime(),
-  //             id: req.user._id.toString(),
-  //             name: req.user.name
-  //           },
-  //           reqStatus: 'PENDING'
-  //         };
-  //         doc.itemRequests.push(itemRequest);
-  //         doc.save((err, doc) => {
-  //           const itemRequestedByCurrentUser = true;
-
-  //           const proposedTrade = {};
-  //           proposedTrade.id = req.params.key;
-  //           proposedTrade.itemName = doc.itemName;
-  //           proposedTrade.itemPic = doc.itemPic;
-  //           proposedTrade.itemOwner = doc.itemOwner;
-  //           proposedTrade.reqStatus = "PENDING";
-  //           proposedTrade.reqMakerInfo = [];
-  //           req.user.trades.unshift(proposedTrade);
-  //           req.user.markModified('trades');
-  //           req.user.save(err => {
-  //             if (err) {
-  //               console.log('Error happened when adding trades request to user model.');
-  //               res.status(500).send('Error while saving to user model!').end();
-  //             } else {
-  //               res.json(objectAssign({}, doc.toObject(), { itemRequestedByCurrentUser }));
-  //             }
-  //           });
-
-  //         });
-  //       } else {
-  //         res.json(doc.toObject());
-  //       }
-  //     }
-  //   });
-  // });
-
-  // app.get('/api/getTradesData', isLoggedIn, (req, res) => {
-  //   Item.find({ itemOwnerId: req.user._id },
-  //     { 'itemRequests': 1, _id: 0, 'itemPic': 1, 'itemName': 1, 'key': 1 })
-  //     .exec((err, docs) => {
-  //       if (err) {
-  //         res.status(500).send('Failed to fetch item trade requests!').end();
-  //       } else {
-  //         let requests = docs.filter(elem => elem.itemRequests.length > 0);
-  //         requests = requests.map(elem => {
-  //           elem.itemRequests = elem.itemRequests.map(elemItem => {
-  //             return ({
-  //               reqStatus: elemItem.reqStatus,
-  //               reqMaker: elemItem.reqMaker.name,
-  //               docId: elemItem.reqMaker.uniqueId
-  //             });
-  //           });
-  //           return elem;
-  //         });
-  //         res.json({ proposedTrades: req.user.trades, tradeRequests: requests });
-  //       }
-
-  //       req.user.notificationsCount = 0;
-  //       req.user.markModified('notificationCount');
-  //       req.user.save();
-  //     });
-  // });
-
-  // app.post('/api/removeitemrequest', isLoggedIn, (req, res) => {
-  //   const key = req.body.id;
-  //   Item.findOne({ key: parseInt(key, 10) })
-  //     .exec((err, doc) => {
-  //       if (err) {
-  //         console.log("Some error happened while removing item request-", err);
-  //         res.status(500).send('Some error happened while removing item request');
-  //       } else {
-
-  //         User.findOne({ _id: doc.itemOwnerId }, (err, doc) => {
-  //           if (!err) {
-  //             doc.notificationsCount -= 1;
-  //             doc.markModified('notificationsCount');
-  //             doc.save();
-  //           }
-  //         });
-
-  //         doc.itemRequests = doc.itemRequests.filter(elem => (
-  //           elem.reqMaker.id !== req.user._id.toString()
-  //         ));
-  //         doc.save(err => {
-  //           if (err) {
-  //             console.log("Some error happened while removing item request-", err);
-  //           } else {
-  //             req.user.trades = req.user.trades.filter(
-  //               elem => elem.id !== key
-  //             );
-  //             req.user.markModified('trades');
-  //             req.user.save(err => {
-  //               if (err) {
-  //                 console.log("Error while removing cancelling trade proposal!");
-  //               } else {
-  //                 res.json({ proposedTrades: req.user.trades });
-  //               }
-  //             });
-  //           }
-  //         });
-  //       }
-  //     });
-  // });
-
-  // app.post('/api/declinerequest', isLoggedIn, (req, res) => {
-  //   // first remove itemRequest = require(item
-  //   let userId, reqStatus;
-  //   Item.findOne({ key: parseInt(req.body.key, 10) })
-  //     .exec((err, doc) => {
-  //       if (err) {
-  //         res.status(500).send('Error happened while declining trade request!').end();
-  //         console.log('Error happened while declining trade request!');
-  //       } else {
-
-  //         doc.itemRequests = doc.itemRequests.filter(elem => {
-  //           if (elem.reqMaker.uniqueId.toString() === req.body.docId) {
-  //             userId = elem.reqMaker.id;
-  //             reqStatus = elem.reqStatus;
-  //             return false;
-  //           } else {
-  //             return true;
-  //           }
-  //         });
-
-  //         if (reqStatus === 'PENDING') {
-  //           doc.save(err => {
-  //             if (err) {
-  //               res.status(500).send('Error happened while declining trade request!').end();
-  //               console.log('Error happened while declining trade request!');
-  //             } else {
-  //               // remove proposedTrade item = require(the user who made that request.
-  //               User.findOne({ _id: userId })
-  //                 .exec((err, doc) => {
-  //                   if (err) {
-  //                     res.status(500).send('Error happened while declining trade request!').end();
-  //                     console.log('Error happened while declining trade request!');
-  //                   } else {
-  //                     doc.trades = doc.trades.filter(elem => elem.id !== req.body.key);
-  //                     doc.save(err => {
-  //                       if (err) {
-  //                         res.status(500).send('Error happened while declining trade request!').end();
-  //                         console.log('Error happened while declining trade request!');
-  //                       } else {
-  //                         res.json({ status: 'OK' });
-  //                       }
-  //                     });
-  //                   }
-  //                 });
-  //             }
-  //           });
-  //         } else {
-  //           res.json({ status: 'Accepted trade requests can\'t be declined' });
-  //         }
-
-  //       }
-  //     });
-  // });
-
-  // app.post('/api/acceptrequest', isLoggedIn, (req, res) => {
-  //   const { key, docId } = req.body;
-  //   let userId, prevReqStatus;
-  //   Item.findOne({ key: parseInt(key, 10) })
-  //     .exec((err, doc) => {
-  //       if (err) {
-  //         res.status(500).send('Error happened while accepting trade request!').end();
-  //         console.log('Error happened while accepting trade request!');
-  //       } else {
-
-  //         doc.itemRequests = doc.itemRequests.map(elem => {
-  //           if (elem.reqMaker.uniqueId.toString() === docId) {
-  //             userId = elem.reqMaker.id;
-  //             prevReqStatus = elem.reqStatus;
-  //             // mongoose unable to see changes in embedded arrays
-  //             // check out issue - https://github.com/Automattic/mongoose/issues/1204
-  //             elem.reqStatus = 'ACCEPTED';
-  //           }
-  //           return elem;
-  //         });
-  //         doc.markModified('itemRequests');
-  //         if (prevReqStatus === 'PENDING') {
-  //           doc.save(err => {
-  //             if (err) {
-  //               res.status(500).send('Error happened while accepting trade request!').end();
-  //               console.log('Error happened while accepting trade request!');
-  //             } else {
-  //               // remove proposedTrade item = require(the user who made that request.
-  //               User.findOne({ _id: userId })
-  //                 .exec((err, doc) => {
-  //                   if (err) {
-  //                     res.status(500).send('Error happened while declining trade request!').end();
-  //                     console.log('Error happened while declining trade request!');
-  //                   } else {
-  //                     doc.trades = doc.trades.map(elem => {
-  //                       if (elem.id === key) {
-  //                         elem.reqStatus = "ACCEPTED";
-  //                         elem.reqMakerInfo = [req.user.email, req.user.phoneNo];
-  //                       }
-  //                       return elem;
-  //                     });
-
-  //                     // for notifications
-  //                     doc.notificationsCount += 1;
-  //                     doc.markModified('notificationsCount');
-
-  //                     doc.markModified('trades');
-  //                     doc.save(err => {
-  //                       if (err) {
-  //                         res.status(500).send('Error happened while declining trade request!').end();
-  //                         console.log('Error happened while declining trade request!');
-  //                       } else {
-  //                         res.json({ status: 'OK' });
-  //                       }
-  //                     });
-  //                   }
-  //                 });
-  //             }
-  //           });
-  //         } else {
-  //           res.json({ status: 'Trade request is already accepted!' });
-  //         }
-  //       }
-  //     });
-
-  // });
-
+  app.get('/profile/:id', (req, res, next) => {
+    req.profileId = req.params.id;
+    next();
+  }, sendProfileData);
 };

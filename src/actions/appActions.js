@@ -1,6 +1,7 @@
 import * as types from '../constants/actionTypes';
+import { updateFavState } from './favActions';
 
-export function updateAppState(appData) {
+export function updateAppState(appData, favourites) {
   return (dispatch) => {
     dispatch(
       {
@@ -8,5 +9,8 @@ export function updateAppState(appData) {
         payload: appData
       }
     );
+    if (favourites) {
+      updateFavState(favourites)(dispatch);
+    }
   };
 }
