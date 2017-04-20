@@ -38,3 +38,14 @@ export function getInitialState(cb, page) {
     });
   };
 }
+
+export function updateItemLikes(change, pos) {
+  return (dispatch) => {
+    dispatch(
+      {
+        type: types.UPDATE_ITEM_LIKES,
+        payload: {change, pos}
+      }
+    );
+  };
+}

@@ -1,6 +1,8 @@
 import * as types from '../constants/actionTypes';
 import fetch from 'unfetch';
 
+import { updateItemLikes } from './commonActions';
+
 export function updateFavState(favData) {
   return (dispatch) => {
     dispatch(
@@ -13,7 +15,7 @@ export function updateFavState(favData) {
 }
 
 
-export function toggleFavItem(photoId, node) {
+export function toggleFavItem(photoId, node, change, pos) {
   return (dispatch) => {
     fetch('/api/toggleFavItem', {
       method: 'POST',
@@ -36,6 +38,7 @@ export function toggleFavItem(photoId, node) {
         if (data.error === 'UNAUTHORIZED') {
           throw 'UNAUTHORIZED!';
         }
+        updateItemLikes(change, pos)(dispatch);
         node.classList.toggle('liked');
         dispatch(
           {

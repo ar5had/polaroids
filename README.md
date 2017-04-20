@@ -14,10 +14,18 @@ A full stack JavaScript app inspired from Pinterest and unsplash.
 * React
 * Redux
 * Sass
-* React Router@4
+* React Router
 * Node
 * Express
 * Mongoose/MongoDB
 * Webpack
 * Mocha-Chai
 * Travis CI
+
+## To Do
+* Mocha/chai tests
+* Travis Ci
+* React router 4
+
+## Questions
+* Why array.map mutate states?

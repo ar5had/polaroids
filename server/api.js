@@ -161,9 +161,16 @@ module.exports = function (app) {
       } else {
         res.json(req.user.likedItems);
 
+        let query;
+        if (count === -1) {
+          query = { key: parseInt(photoId, 10), likesCount: { $gt: 0 } };
+        } else {
+          query = { key: parseInt(photoId, 10) };
+        }
+
         Item.findOneAndUpdate(
-            { key: parseInt(photoId, 10) },
-            { $inc: { likesCount: count } }
+          query,
+          { $inc: { likesCount: count } }
         ).exec(err => {
           if (err) {
             console.error('Error happend while adding likes count!')

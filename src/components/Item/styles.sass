@@ -1,5 +1,13 @@
 @import '../../styles/variables.sass'
 
+@keyframes wave
+  from
+    // transform: scale(1.2)
+    background-size: 70%
+  to
+    background-size: 50%
+    // transform: scale(1)
+
 .item
   height: auto
   padding: 15px 15px 10px 15px
@@ -25,12 +33,17 @@
     .pauthinfo
       display: flex
       align-items: center
+      font-weight: 700
       .heart-button
         background-image: url('../../assets/images/heart.png')
-        margin-left: 10px
+        margin-left: 5px
+      .heart-button.wait
+        background-color: transparentize($heartRed, .5)
+        animation: wave infinite .5s ease-in-out
+        pointer-events: none
       .heart-button.liked
         background:
-          color: #f37070
+          color: $heartRed
       .heart-button, .delete-button
         line-height: 1
         border: solid 2px transparent
@@ -76,6 +89,7 @@
 
 .item.deleted
   opacity: .6
+  pointer-events: none
   .delete-button
     background:
       color: $black !important

@@ -13,7 +13,7 @@ class OtherInfo extends Component {
     const data = this.props.items;
     const favItems = this.props.favItems;
     if(data.length > 0) {
-      const items = data.map((e) => {
+      const items = data.map((e, i) => {
         const hasUserLiked = favItems.includes(e.key);
         return (
           <Item
@@ -28,6 +28,7 @@ class OtherInfo extends Component {
             deleteItem={this.props.deleteItem}
             ownItem={this.props.ownItem}
             toggleFavItem={this.props.toggleFavItem}
+            pos={i}
           />
         );
       });

@@ -4,16 +4,16 @@ import { Link } from 'react-router';
 import './styles.sass';
 
 class Item extends Component {
-  getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId) {
-    // change this line with some redux server code
+  getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos) {
     if(this.props.ownItem) {
       return (
         <div className="pauthinfo">
           {likesCount ? likesCount : ''}
           <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
-            ref={node => { this.hbtn = node; }}
             onClick={(e) => {
-              this.props.toggleFavItem(photoId, e.target);
+              e.target.classList.add('wait');
+              const likesChange = hasUserLiked ? -1 : 1;
+              this.props.toggleFavItem(photoId, e.target, likesChange, pos);
             }}
           />
           <span className="delete-button"
@@ -32,7 +32,9 @@ class Item extends Component {
         {likesCount ? likesCount : ''}
         <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
           onClick={(e) => {
-            this.props.toggleFavItem(photoId, e.target);
+            e.target.classList.add('wait');
+            const likesChange = hasUserLiked ? -1 : 1;
+            this.props.toggleFavItem(photoId, e.target, likesChange, pos);
           }}
         />
         <Link className="author-img">
@@ -50,7 +52,8 @@ class Item extends Component {
       picture,
       photoId,
       ownerName,
-      ownerDp
+      ownerDp,
+      pos
     } = this.props;
     return (
       <div className="item">
@@ -59,7 +62,7 @@ class Item extends Component {
         />
         <div className="info">
           <span className="pmf pname">{caption}</span>
-          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId)}
+          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos)}
         </div>
       </div>
     );
@@ -77,7 +80,8 @@ Item.propTypes = {
   deleteItem: PropTypes.func,
   location: PropTypes.string,
   ownItem: PropTypes.bool,
-  toggleFavItem: PropTypes.func.isRequired
+  toggleFavItem: PropTypes.func.isRequired,
+  pos: PropTypes.number.isRequired
 };
 
 export default Item;

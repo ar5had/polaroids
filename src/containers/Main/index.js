@@ -84,7 +84,7 @@ class Homepage extends Component {
     const data = this.props.state;
     const { favItems } = this.props;
     if (data.length > 0) {
-      const items = data.map((e) => {
+      const items = data.map((e, i) => {
         const hasUserLiked = favItems.includes(parseInt(e.key,10));
         return (
           <Item
@@ -97,6 +97,7 @@ class Homepage extends Component {
             ownerName={e.ownerName}
             ownerDp={e.ownerDp}
             toggleFavItem={this.props.toggleFavItem}
+            pos={i}
           />
         );
       });
