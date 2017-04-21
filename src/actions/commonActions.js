@@ -43,6 +43,13 @@ export function updateItemLikes(change, pos) {
   return (dispatch) => {
     dispatch(
       {
+        type: types.UPDATE_MY_ITEM_LIKES,
+        payload: {change, pos}
+      }
+    );
+
+    dispatch(
+      {
         type: types.UPDATE_ITEM_LIKES,
         payload: {change, pos}
       }

@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+
+import * as actions from '../../actions/myItemsActions';
 import { toggleFavItem } from '../../actions/favActions';
 import loadPageProps from '../../utils/loadPageProps';
 import Item from '../../components/Item';
@@ -17,26 +19,62 @@ class Favourites extends Component {
     loadPageProps('Favourites - Polaroids');
   }
 
+  getAllItemsData() {
+    console.log(this.props.state, this.props.favItems);
+    const data = this.props.state.filter(elem => this.props.favItems.includes(elem.key));
+    const { favItems } = this.props;
+    if (data.length > 0) {
+      const items = data.map((e, i) => {
+        const hasUserLiked = favItems.includes(parseInt(e.key,10));
+        return (
+          <Item
+            key={e.key}
+            photoId={e.key}
+            picture={e.picture}
+            caption={e.caption}
+            hasUserLiked={hasUserLiked}
+            likesCount={e.likesCount}
+            ownerName={e.ownerName}
+            ownerDp={e.ownerDp}
+            toggleFavItem={this.props.toggleFavItem}
+            pos={i}
+          />
+        );
+      });
+      return (
+        <div className={`favpolaroidsWrapper mypolaroidsWrapper`}>
+          {items}
+        </div>
+      );
+    } else {
+      return (
+        <div className="noItemHeadingWrapper">
+          <h3 className="noItemHeading pmf"> No post found!</h3>
+        </div>
+      );
+    }
+  }
+
+
   render() {
     return (
       <div className="favourites">
         <h4 className="heading">Your Favourites</h4>
-        <div className="favpolaroidsWrapper mypolaroidsWrapper">
-          {"123456790".split("").map((e, i) => <Item key={i} />)}
-        </div>
+        {this.getAllItemsData()}
       </div>
     );
   }
 }
 
 Favourites.propTypes = {
-  state: PropTypes.object.isRequired,
+  state: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
-  toggleFav: PropTypes.func.isRequired,
+  toggleFavItem: PropTypes.func.isRequired,
   favItems: PropTypes.array.isRequired
 };
 
-const mapStateToProps = (state) => ({ state: state.appData.favourites });
-const mapDispatchToProps = (dispatch) => ({toggleFavItem: bindActionCreators(toggleFavItem, dispatch)});
+const mapStateToProps = state => ({ state: state.allItemsData, favItems: state.favourites });
+
+const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch), toggleFavItem: bindActionCreators(toggleFavItem, dispatch) });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Favourites);

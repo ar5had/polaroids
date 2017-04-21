@@ -69,6 +69,7 @@ class Header extends Component {
                 if(res.status === 200) {
                   this.props.actions.updateAppState({ loggedIn: false });
                   browserHistory.push('/');
+                  location.reload();
                 }
               })
 

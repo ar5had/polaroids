@@ -7,7 +7,7 @@ class Item extends Component {
   getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos) {
     if(this.props.ownItem) {
       return (
-        <div className="pauthinfo">
+        <div className="pauthinfo osf">
           {likesCount ? likesCount : ''}
           <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
             onClick={(e) => {
@@ -28,7 +28,7 @@ class Item extends Component {
     }
 
     return (
-      <div className="pauthinfo">
+      <div className="pauthinfo osf">
         {likesCount ? likesCount : ''}
         <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
           onClick={(e) => {
@@ -55,7 +55,7 @@ class Item extends Component {
       ownerDp,
       pos
     } = this.props;
-    console.log(likesCount);
+
     return (
       <div className="item">
         <div className="picture"
