@@ -11,17 +11,16 @@ export default function allItemsReducer(state = initialState.allItems, action) {
       return [action.payload, ...state];
     case UPDATE_ITEM_LIKES:
       pos = action.payload.pos;
-      // console.log(pos, state[pos]);
-      // likesCount = state[pos].likesCount + action.payload.change;
-      // likesCount = likesCount >= 0 ? likesCount : 0;
+      likesCount = state[pos].likesCount + action.payload.change;
+      likesCount = likesCount >= 0 ? likesCount : 0;
       return [
         ...state.slice(0, pos),
-        // // Object.assign(
-        // //   {},
-        // //   state[pos]
-
-        // // ),
-        ...state(pos)
+        Object.assign(
+          {},
+          state[pos],
+          { likesCount }
+        ),
+        ...state.slice(pos+1)
       ];
     default:
       return state;

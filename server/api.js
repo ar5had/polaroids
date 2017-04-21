@@ -17,7 +17,7 @@ const sendProfileData = (req, res) => {
   const { name, dp } = req.user;
   Item.find(
     { ownerId: req.profileId.toString() },
-    ['key', 'caption', 'picture'],
+    ['key', 'caption', 'picture', 'likesCount'],
     {
       sort: { key: -1 }
     }

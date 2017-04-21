@@ -55,6 +55,7 @@ class Item extends Component {
       ownerDp,
       pos
     } = this.props;
+    console.log(likesCount);
     return (
       <div className="item">
         <div className="picture"
