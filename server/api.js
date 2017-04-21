@@ -17,7 +17,7 @@ const sendProfileData = (req, res) => {
   const { name, dp } = req.user;
   Item.find(
     { ownerId: req.profileId.toString() },
-    ['key', 'caption', 'picture', 'likesCount'],
+    {'_id': 0, 'key': 1, 'caption': 1, 'picture': 1, 'likesCount': 1, 'ownerUserId': 1},
     {
       sort: { key: -1 }
     }
@@ -77,7 +77,7 @@ module.exports = function (app) {
           {},
           req.body,
           {
-            likesCount: 0, key: date.getTime()
+            likesCount: 0, key: date.getTime(), ownerUserId: req.user.userId
           },
           ownerInfo
         );
@@ -127,7 +127,7 @@ module.exports = function (app) {
 
   app.get('/api/getAllItemsData', (req, res) => {
     Item.find({},
-      ['key', 'caption', 'picture', 'ownerDp', 'ownerName', 'likesCount'],
+      {'_id': 0, 'key': 1, 'caption': 1, 'picture': 1, 'ownerDp': 1, 'ownerName': 1, 'likesCount': 1, 'ownerUserId': 1},
       {
         sort: { key: -1 }
       }

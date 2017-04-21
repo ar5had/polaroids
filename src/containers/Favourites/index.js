@@ -20,7 +20,6 @@ class Favourites extends Component {
   }
 
   getAllItemsData() {
-    console.log(this.props.state, this.props.favItems);
     const data = this.props.state.filter(elem => this.props.favItems.includes(elem.key));
     const { favItems } = this.props;
     if (data.length > 0) {

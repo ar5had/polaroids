@@ -8,6 +8,7 @@ const Item = new Schema({
   picture: String,
   likesCount: Number,
   ownerId: String,
+  ownerUserId: String,
   ownerDp: String,
   ownerName: String,
   key: Number
