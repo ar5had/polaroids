@@ -97,6 +97,7 @@ class Homepage extends Component {
             ownerName={e.ownerName}
             ownerDp={e.ownerDp}
             toggleFavItem={this.props.toggleFavItem}
+            ownerUserId={e.ownerUserId}
             pos={i}
           />
         );

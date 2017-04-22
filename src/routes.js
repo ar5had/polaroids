@@ -10,7 +10,7 @@ import Main from './containers/Main';
 import Profile from './containers/Profile';
 
 import CheckAuth from './utils/checkAuth';
-import { getInitialState } from './actions/commonActions';
+import { getInitialState, getPublicProfile } from './actions/commonActions';
 import { updateAppState } from './actions/appActions';
 
 export default function AllRoutes(dispatch) {
@@ -50,22 +50,10 @@ export default function AllRoutes(dispatch) {
     );
   };
 
-  const requireNoAuthAndLoad = (nextState, replace, cb) => {
+  const loadPublicProfile = (nextState, replace, cb) => {
     document.body.style.cursor = 'wait';
-    // CheckAuth take two function as parameter
-    // one for authorized req
-    // other for unauthorized req
-    // If user is authorized then load initial state
-    CheckAuth(
-      () => {
-        const path = nextState.location.pathname;
-        getInitialState(cb, path.slice(1))(dispatch);
-      },
-      () => {
-        const path = nextState.location.pathname;
-        getInitialState(cb, path.slice(1))(dispatch);
-      }
-    );
+    const id = nextState.params.id;
+    getPublicProfile(cb, id, replace)(dispatch);
   };
 
   const loadAllItems = (nextState, replace, cb) => {
@@ -107,7 +95,7 @@ export default function AllRoutes(dispatch) {
     <Route path="/" component={App} onEnter={loadAppState}>
       <IndexRoute component={Main} onEnter={loadAllItems} />
       <Route path="profile" component={Profile} onEnter={requireAuthAndLoad} />
-      <Route path="profile/:id" component={Profile} onEnter={requireNoAuthAndLoad} />
+      <Route path="user/:id" component={Profile} onEnter={loadPublicProfile} />
       <Route path="login" component={Login} onEnter={requireNoAuth} />
       <Route path="favourites" component={Favourites} />
       <Route path="*" component={ErrorPage} />

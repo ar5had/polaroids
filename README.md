@@ -25,7 +25,8 @@ A full stack JavaScript app inspired from Pinterest and unsplash.
 ## To Do
 * Mocha/chai tests
 * Travis Ci
-* React router 4
+* React router 4 in different branch
 
 ## Questions
 * Why array.map mutate states?
+* Why `/profile/id` sent back raw json data instead of being handled by react router? This strange behaviour gone away when `/profile/id` was changed  to '/user/id' so that it doesn't conflict with `/profile` path.

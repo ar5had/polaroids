@@ -28,6 +28,7 @@ class OtherInfo extends Component {
             deleteItem={this.props.deleteItem}
             ownItem={this.props.ownItem}
             toggleFavItem={this.props.toggleFavItem}
+            ownerUserId={e.ownerUserId}
             pos={i}
           />
         );
@@ -49,7 +50,13 @@ class OtherInfo extends Component {
   render() {
     return (
       <div className="otherInfo">
-        <h4 className="heading">Your Posts</h4>
+        <h4 className="heading">
+          {
+            this.props.isPublicPage ?
+            `${this.props.ownerName.split(' ')[0]}'s Posts`:
+            `Your Posts`
+          }
+        </h4>
         {this.getAllItemsData()}
       </div>
     );
@@ -62,6 +69,8 @@ OtherInfo.propTypes = {
   ownItem: PropTypes.bool,
   favItems: PropTypes.array,
   toggleFavItem: PropTypes.func.isRequired,
+  ownerName: PropTypes.string,
+  isPublicPage: PropTypes.bool
 };
 
 export default OtherInfo;

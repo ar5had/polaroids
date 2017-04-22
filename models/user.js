@@ -26,12 +26,4 @@ const User = new Schema({
   }
 });
 
-// using es5 style function syntax so that `this` is bound
-User.pre('save', function(next) {
-  // get unique id
-  const userId = new Date().getTime().toString();
-  this.userId = userId;
-  next();
-});
-
 module.exports = mongoose.model('User', User);

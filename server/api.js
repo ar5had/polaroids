@@ -1,4 +1,4 @@
-// const User = require('../models/user');
+const User = require('../models/user');
 const Item = require('../models/item');
 const objectAssign = require('object-assign');
 const cloudinary = require('cloudinary');
@@ -14,20 +14,36 @@ const upload = multer({
 }).single('picture');
 
 const sendProfileData = (req, res) => {
-  const { name, dp } = req.user;
   Item.find(
-    { ownerId: req.profileId.toString() },
-    {'_id': 0, 'key': 1, 'caption': 1, 'picture': 1, 'likesCount': 1, 'ownerUserId': 1},
+    { ownerUserId: req.profileId.toString() },
+    { '_id': 0, 'key': 1, 'caption': 1, 'picture': 1, 'likesCount': 1, 'ownerUserId': 1, 'ownerDp': 1 },
     {
       sort: { key: -1 }
     }
   )
     .exec((err, docs) => {
       if (err) {
-        console.error('Error happened while loading myItems-', err);
-        res.status(500).send({ error: 'Some error happened while loading all of your items!' });
+        console.error('Error happened while loading profile items-', err);
+        res.status(500).send({ error: 'Some error happened while loading profile items!' });
       } else {
-        res.json({ name, dp, myItems: docs });
+        if (req.profileName && req.profileDp) {
+          res.json({ name: req.profileName, dp: req.profileDp, myItems: docs });
+        } else {
+          User.findOne({ userId: req.profileId.toString() }, { _id: 0, dp: 1, name: 1 })
+            .exec((err, user) => {
+              if (err) {
+                console.error('Error happened while loading profile items-', err);
+                res.status(500).send({ error: 'Some error happened while loading profile items!' });
+              } else {
+                if (user) {
+                  res.json({ name: user.name, dp: user.dp, myItems: docs });
+                } else {
+                  res.json({ 'error': 'WRONG_PROFILE_ID!' });
+                }
+              }
+
+            });
+        }
       }
     });
 };
@@ -53,7 +69,9 @@ module.exports = function (app) {
   });
 
   app.get('/api/getProfileData', isLoggedIn, (req, res, next) => {
-    req.profileId = req.user._id;
+    req.profileId = req.user.userId;
+    req.profileName = req.user.name;
+    req.profileDp = req.user.dp;
     next();
   }, sendProfileData);
 
@@ -127,7 +145,7 @@ module.exports = function (app) {
 
   app.get('/api/getAllItemsData', (req, res) => {
     Item.find({},
-      {'_id': 0, 'key': 1, 'caption': 1, 'picture': 1, 'ownerDp': 1, 'ownerName': 1, 'likesCount': 1, 'ownerUserId': 1},
+      { '_id': 0, 'key': 1, 'caption': 1, 'picture': 1, 'ownerDp': 1, 'ownerName': 1, 'likesCount': 1, 'ownerUserId': 1 },
       {
         sort: { key: -1 }
       }
@@ -181,7 +199,11 @@ module.exports = function (app) {
   });
 
   app.get('/profile/:id', (req, res, next) => {
-    req.profileId = req.params.id;
-    next();
+    if (!isNaN(parseFloat(req.params.id))) {
+      req.profileId = req.params.id;
+      next();
+    } else {
+      res.json({ 'error': 'WRONG_PROFILE_ID!' });
+    }
   }, sendProfileData);
 };

@@ -4,8 +4,8 @@ import { Link } from 'react-router';
 import './styles.sass';
 
 class Item extends Component {
-  getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos) {
-    if(this.props.ownItem) {
+  getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos, ownerUserId) {
+    if (this.props.ownItem) {
       return (
         <div className="pauthinfo osf">
           {likesCount ? likesCount : ''}
@@ -37,8 +37,8 @@ class Item extends Component {
             this.props.toggleFavItem(photoId, e.target, likesChange, pos);
           }}
         />
-        <Link className="author-img">
-          <span style={{backgroundImage: `url(${ownerDp})`}}>{ownerName}</span>
+        <Link className="author-img" to={`/user/${ownerUserId}`} >
+          <span style={{ backgroundImage: `url(${ownerDp})` }}>{ownerName}</span>
         </Link>
       </div>
     );
@@ -53,7 +53,8 @@ class Item extends Component {
       photoId,
       ownerName,
       ownerDp,
-      pos
+      pos,
+      ownerUserId
     } = this.props;
 
     return (
@@ -63,7 +64,7 @@ class Item extends Component {
         />
         <div className="info">
           <span className="pmf pname">{caption}</span>
-          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos)}
+          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos, ownerUserId)}
         </div>
       </div>
     );
@@ -80,6 +81,7 @@ Item.propTypes = {
   ownerDp: PropTypes.string,
   deleteItem: PropTypes.func,
   location: PropTypes.string,
+  ownerUserId: PropTypes.string,
   ownItem: PropTypes.bool,
   toggleFavItem: PropTypes.func.isRequired,
   pos: PropTypes.number.isRequired

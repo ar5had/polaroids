@@ -15,6 +15,11 @@ class Profile extends Component {
   componentDidMount() {
     loadPageProps('Profile - Polaroids');
   }
+
+  isPublicPage() {
+    return this.props.params.id ? true : false;
+  }
+
   render() {
     return (
       <div className="infoWrapper">
@@ -23,6 +28,8 @@ class Profile extends Component {
           dp={this.props.state.dp}
         />
         <OtherInfo
+          ownerName={this.props.state.name}
+          isPublicPage={this.isPublicPage()}
           items={this.props.state.myItems}
           deleteItem={this.props.actions.deleteMyItem}
           ownItem={this.props.location.pathname === '/profile'}
@@ -39,7 +46,8 @@ Profile.propTypes = {
   actions: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   toggleFavItem: PropTypes.func.isRequired,
-  favItems: PropTypes.array.isRequired
+  favItems: PropTypes.array.isRequired,
+  params: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({ state: state.profileData, favItems: state.favourites });

@@ -33,7 +33,48 @@ export function getInitialState(cb, page) {
     })
     .catch(err => {
       /* eslint-disable no-console */
-      console.error(`Got error:${err} while dispatching GET_INITIAL_${page.toUpperCase()}_STATE!`);
+      console.error(`Got error:${err} while dispatching UPDATE_${page.toUpperCase()}_STATE!`);
+      cb();
+    });
+  };
+}
+
+export function getPublicProfile(cb, id, replace) {
+  return (dispatch) => {
+    fetch(`/profile/${id}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Cache': 'no-cache'
+      }
+    })
+    .then(response => {
+      if (response.status >= 400) {
+        throw new Error(response);
+      } else {
+        return response.json();
+      }
+    })
+    .then(data => {
+      console.log(data);
+      if(data.error) {
+        throw new Error(data.error);
+      }
+      dispatch(
+        {
+          type: types[`UPDATE_PROFILE_STATE`],
+          payload: data
+        }
+      );
+      cb();
+    })
+    .catch(err => {
+      /* eslint-disable no-console */
+      replace({
+        pathname: '/404'
+      });
+      console.error(`Got error:${err} while dispatching UPDATE_PROFILE_STATE!`);
       cb();
     });
   };
