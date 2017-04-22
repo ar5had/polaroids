@@ -4,18 +4,33 @@ import { Link } from 'react-router';
 import './styles.sass';
 
 class Item extends Component {
-  getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos, ownerUserId) {
+
+  getHeartButtonClasses(hasUserLiked) {
+    if (hasUserLiked) {
+      return 'heart-button liked';
+    } else {
+      return 'heart-button';
+    }
+  }
+
+  getBtns(hasUserLiked, likesCount, ownerName,
+          ownerDp, photoId, pos, ownerUserId, userLoggedIn) {
     if (this.props.ownItem) {
       return (
         <div className="pauthinfo osf">
-          {likesCount ? likesCount : ''}
-          <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
-            onClick={(e) => {
-              e.target.classList.add('wait');
-              const likesChange = hasUserLiked ? -1 : 1;
-              this.props.toggleFavItem(photoId, e.target, likesChange, pos);
-            }}
-          />
+          { userLoggedIn ?
+            <span className="heartBtnWrapper">
+              {likesCount ? likesCount : ''}
+              <span className={this.getHeartButtonClasses(hasUserLiked)}
+                onClick={(e) => {
+                  e.target.classList.add('wait');
+                  const likesChange = hasUserLiked ? -1 : 1;
+                  this.props.toggleFavItem(photoId, e.target, likesChange, pos);
+                }}
+              />
+            </span> :
+            ''
+          }
           <span className="delete-button"
             onClick={(e) => {
               const parent = e.target.parentNode.parentNode.parentNode;
@@ -29,15 +44,20 @@ class Item extends Component {
 
     return (
       <div className="pauthinfo osf">
-        {likesCount ? likesCount : ''}
-        <span className={hasUserLiked ? "heart-button liked" : "heart-button"}
-          onClick={(e) => {
-            e.target.classList.add('wait');
-            const likesChange = hasUserLiked ? -1 : 1;
-            this.props.toggleFavItem(photoId, e.target, likesChange, pos);
-          }}
-        />
-        <Link className="author-img" to={`/user/${ownerUserId}`} >
+        { userLoggedIn ?
+          <span className="heartBtnWrapper">
+            {likesCount ? likesCount : ''}
+            <span className={this.getHeartButtonClasses(hasUserLiked)}
+              onClick={(e) => {
+                e.target.classList.add('wait');
+                const likesChange = hasUserLiked ? -1 : 1;
+                this.props.toggleFavItem(photoId, e.target, likesChange, pos);
+              }}
+            />
+          </span> :
+          ''
+        }
+        <Link className="author-img tooltip" to={`/user/${ownerUserId}`} title={ownerName}>
           <span style={{ backgroundImage: `url(${ownerDp})` }}>{ownerName}</span>
         </Link>
       </div>
@@ -54,7 +74,8 @@ class Item extends Component {
       ownerName,
       ownerDp,
       pos,
-      ownerUserId
+      ownerUserId,
+      userLoggedIn
     } = this.props;
 
     return (
@@ -64,7 +85,18 @@ class Item extends Component {
         />
         <div className="info">
           <span className="pmf pname">{caption}</span>
-          {this.getBtns(hasUserLiked, likesCount, ownerName, ownerDp, photoId, pos, ownerUserId)}
+          {
+            this.getBtns(
+              hasUserLiked,
+              likesCount,
+              ownerName,
+              ownerDp,
+              photoId,
+              pos,
+              ownerUserId,
+              userLoggedIn
+            )
+          }
         </div>
       </div>
     );
@@ -84,7 +116,8 @@ Item.propTypes = {
   ownerUserId: PropTypes.string,
   ownItem: PropTypes.bool,
   toggleFavItem: PropTypes.func.isRequired,
-  pos: PropTypes.number.isRequired
+  pos: PropTypes.number.isRequired,
+  userLoggedIn: PropTypes.bool.isRequired
 };
 
 export default Item;

@@ -131,16 +131,16 @@ module.exports = function (app) {
 
   // add double check so that non-auth user can't delete pic in any case
   app.delete('/api/deleteMyItem/:key', isLoggedIn, (req, res) => {
-    Item.find({ key: req.params.key })
+    Item.find({ key: req.params.key, ownerId: req.user._id})
       .remove((err) => {
         if (err) {
           console.error('Error happened while deleting item with key', req.params.key, "-", err);
           res.sendStatus(500);
         } else {
           res.sendStatus(200);
+          cloudinary.uploader.destroy(`${req.params.key}`);
         }
       });
-    cloudinary.uploader.destroy(`${req.params.key}`);
   });
 
   app.get('/api/getAllItemsData', (req, res) => {

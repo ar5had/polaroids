@@ -35,6 +35,7 @@ class Profile extends Component {
           ownItem={this.props.location.pathname === '/profile'}
           favItems={this.props.favItems}
           toggleFavItem={this.props.toggleFavItem}
+          userLoggedIn={this.props.userLoggedIn}
         />
       </div>
     );
@@ -47,10 +48,11 @@ Profile.propTypes = {
   location: PropTypes.object.isRequired,
   toggleFavItem: PropTypes.func.isRequired,
   favItems: PropTypes.array.isRequired,
-  params: PropTypes.object.isRequired
+  params: PropTypes.object.isRequired,
+  userLoggedIn: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = state => ({ state: state.profileData, favItems: state.favourites });
+const mapStateToProps = state => ({ state: state.profileData, userLoggedIn: state.appData.loggedIn, favItems: state.favourites });
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch), toggleFavItem: bindActionCreators(toggleFavItem, dispatch) });
 
 export default connect(

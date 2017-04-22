@@ -30,6 +30,7 @@ class OtherInfo extends Component {
             toggleFavItem={this.props.toggleFavItem}
             ownerUserId={e.ownerUserId}
             pos={i}
+            userLoggedIn={this.props.userLoggedIn}
           />
         );
       });
@@ -70,7 +71,8 @@ OtherInfo.propTypes = {
   favItems: PropTypes.array,
   toggleFavItem: PropTypes.func.isRequired,
   ownerName: PropTypes.string,
-  isPublicPage: PropTypes.bool
+  isPublicPage: PropTypes.bool,
+  userLoggedIn: PropTypes.bool.isRequired
 };
 
 export default OtherInfo;

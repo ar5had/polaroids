@@ -11,7 +11,9 @@ class ErrorPage extends Component {
 
   render() {
     return (
-      <h3 className="error text-center pmf">404(Page Not Found)</h3>
+      <div className="errorHeadingWrapper">
+        <h3 className="error text-center pmf">404(Page Not Found)</h3>
+      </div>
     );
   }
 }

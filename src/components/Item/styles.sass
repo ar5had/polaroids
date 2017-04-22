@@ -34,6 +34,9 @@
       display: flex
       align-items: center
       font-weight: 700
+      .heartBtnWrapper
+        display: flex
+        align-items: center
       .heart-button
         background-image: url('../../assets/images/heart.png')
         margin-left: 5px
@@ -44,6 +47,8 @@
       .heart-button.liked
         background:
           color: $heartRed
+      .heart-button.disabled
+        pointer-events: none !important
       .heart-button, .delete-button
         line-height: 1
         border: solid 2px transparent

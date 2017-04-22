@@ -38,6 +38,7 @@ class Favourites extends Component {
             toggleFavItem={this.props.toggleFavItem}
             ownerUserId={e.ownerUserId}
             pos={i}
+            userLoggedIn={this.props.userLoggedIn}
           />
         );
       });
@@ -70,10 +71,11 @@ Favourites.propTypes = {
   state: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   toggleFavItem: PropTypes.func.isRequired,
-  favItems: PropTypes.array.isRequired
+  favItems: PropTypes.array.isRequired,
+  userLoggedIn: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = state => ({ state: state.allItemsData, favItems: state.favourites });
+const mapStateToProps = state => ({ state: state.allItemsData, userLoggedIn: state.appData.loggedIn, favItems: state.favourites });
 
 const mapDispatchToProps = dispatch => ({ actions: bindActionCreators(actions, dispatch), toggleFavItem: bindActionCreators(toggleFavItem, dispatch) });
 
