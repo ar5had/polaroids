@@ -13,7 +13,7 @@ import './styles.sass';
 
 class Profile extends Component {
   componentDidMount() {
-    loadPageProps('Profile - Polaroids');
+    loadPageProps(`${this.props.state.name} - Polaroids`);
   }
 
   isPublicPage() {

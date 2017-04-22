@@ -12,7 +12,7 @@ class Footer extends Component {
           <span>
             <span className="code">&lt;/&gt;</span> by <a target="blank" href="http://iamarshad.com">Arshad Khan</a>
           </span>
-          <span className="credits"><Link className="">Credits</Link></span>
+          <span className="credits"><Link to="/credits">Credits</Link></span>
         </p>
       </footer>
     );

@@ -4,6 +4,7 @@ import { Route, IndexRoute } from 'react-router';
 import App from './components/App';
 import Login from './components/Login';
 import ErrorPage from './components/ErrorPage';
+import Credits from './components/Credits';
 
 import Favourites from './containers/Favourites';
 import Main from './containers/Main';
@@ -98,6 +99,7 @@ export default function AllRoutes(dispatch) {
       <Route path="user/:id" component={Profile} onEnter={loadPublicProfile} />
       <Route path="login" component={Login} onEnter={requireNoAuth} />
       <Route path="favourites" component={Favourites} />
+      <Route path="credits" component={Credits} />
       <Route path="*" component={ErrorPage} />
     </Route>
   );
