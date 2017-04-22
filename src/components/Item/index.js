@@ -80,9 +80,11 @@ class Item extends Component {
 
     return (
       <div className="item">
-        <div className="picture"
-          style={{ backgroundImage: `url(${picture})` }}
-        />
+        <div className="picture">
+          <div
+            style={{ backgroundImage: `url(${picture})` }}
+          />
+        </div>
         <div className="info">
           <span className="pmf pname">{caption}</span>
           {

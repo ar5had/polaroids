@@ -27,9 +27,24 @@
     letter-spacing: 2px
     word-spacing: 2px
     display: flex
+    justify-content: space-between
     .pname
-      flex: 1
       line-height: 2
+      flex: 1
+      height: 30px
+      overflow: hidden
+      margin-right: 10px
+      position: relative
+      &:after, &::after
+        z-index: 2
+        display: block
+        content: ' '
+        background: linear-gradient(to right, rgba(255, 255, 255, 0), #fff)
+        height: 2rem
+        bottom: 2px
+        right: 0
+        width: 40px
+        position: absolute
     .pauthinfo
       display: flex
       align-items: center
@@ -86,11 +101,13 @@
           height: 24px
           border-radius: 50%
   .picture
-    padding-bottom: 100%
-    background:
-      color: #eee
-      repeat: no-repeat
-      size: 100% 100%
+    div
+      padding-bottom: 100%
+      background:
+        color: #eee
+        repeat: no-repeat
+        size: auto 100%
+        position: 50% 50%
 
 .item.deleted
   opacity: .6
